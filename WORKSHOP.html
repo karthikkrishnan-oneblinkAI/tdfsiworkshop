@@ -434,7 +434,7 @@
     </div>
     <div class="collapsible-content">
       <div class="file-tree">
-        <div class="folder">📁 workshop/tdmcpagentcore/</div>
+        <div class="folder">📁 /home/ubuntu/workshop/tdfsiworkshop/</div>
         <div class="file file-python">├── agent.py                    # Main Teradata agent</div>
         <div class="file file-python">├── customer_retention_agent.py # Churn prevention agent</div>
         <div class="file file-python">├── credit_risk_agent.py        # Credit risk analysis</div>
@@ -470,8 +470,8 @@
       </div>
       <div class="step-description">Go to the workshop folder where all agent code is located.</div>
       <div class="command-box">
-        <code class="command-text">cd ~/workshop/tdmcpagentcore</code>
-        <button class="copy-btn" onclick="copyCommand(this, 'cd ~/workshop/tdmcpagentcore')">📋 Copy</button>
+        <code class="command-text">cd /home/ubuntu/workshop/tdfsiworkshop</code>
+        <button class="copy-btn" onclick="copyCommand(this, 'cd /home/ubuntu/workshop/tdfsiworkshop')">📋 Copy</button>
       </div>
       <div class="checkbox-wrapper">
         <label><input type="checkbox" onchange="markComplete('step2', this.checked)"> Done</label>
@@ -624,8 +624,8 @@ Status: ACTIVE</div>
       </div>
       <div class="step-description">Send a query to your deployed agent via the AgentCore API.</div>
       <div class="command-box">
-        <code class="command-text">agentcore invoke '{"prompt": "Show customer churn rate by country"}'</code>
-        <button class="copy-btn" onclick="copyCommand(this, `agentcore invoke '{\"prompt\": \"Show customer churn rate by country\"}'`)">📋 Copy</button>
+        <code class="command-text" id="invokeCmd">agentcore invoke '{"prompt": "Show customer churn rate by country"}'</code>
+        <button class="copy-btn" onclick="copyFromElement('invokeCmd', this)">📋 Copy</button>
       </div>
       <div class="tip-box">
         <div class="tip-title">💡 Pro tip: Use pretty_invoke for formatted output</div>
@@ -756,6 +756,20 @@ Status: ACTIVE</div>
   <script>
     // Copy to clipboard
     function copyCommand(btn, text) {
+      navigator.clipboard.writeText(text).then(() => {
+        const originalText = btn.textContent;
+        btn.textContent = '✓ Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+
+    // Copy from element text content
+    function copyFromElement(elementId, btn) {
+      const text = document.getElementById(elementId).textContent;
       navigator.clipboard.writeText(text).then(() => {
         const originalText = btn.textContent;
         btn.textContent = '✓ Copied!';
