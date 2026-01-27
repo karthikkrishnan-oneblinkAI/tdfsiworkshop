@@ -1,0 +1,26 @@
+# Teradata Workshop - AgentCore Configuration
+# No hardcoded account IDs - auto-created per account on first deploy
+
+default_agent: agent
+agents:
+  agent:
+    name: teradata-workshop-agent
+    entrypoint: /home/ubuntu/workshop/agent.py
+    deployment_type: container
+    platform: linux/arm64
+    source_path: /home/ubuntu/workshop
+    
+    aws:
+      # Auto-create resources in the EC2's AWS account
+      execution_role_auto_create: true
+      ecr_auto_create: true
+      region: us-east-1
+      
+      network_configuration:
+        network_mode: PUBLIC
+      
+      observability:
+        enabled: true
+    
+    memory:
+      mode: NO_MEMORY
