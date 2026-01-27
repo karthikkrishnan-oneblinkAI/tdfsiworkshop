@@ -412,7 +412,7 @@
   <div class="progress-container">
     <div class="progress-bar" id="progressBar"></div>
   </div>
-  <div class="progress-text" id="progressText">0 of 8 steps completed</div>
+  <div class="progress-text" id="progressText">0 of 9 steps completed</div>
 
   <!-- What's Already Set Up -->
   <div class="info-box">
@@ -507,6 +507,26 @@
     <div class="step" id="step4">
       <div class="step-header">
         <span class="step-number">4</span>
+        <span class="step-title">Install Python Dependencies</span>
+      </div>
+      <div class="step-description">Install the required Python packages for the agent.</div>
+      <div class="command-box">
+        <code class="command-text">pip install -r requirements.txt</code>
+        <button class="copy-btn" onclick="copyCommand(this, 'pip install -r requirements.txt')">📋 Copy</button>
+      </div>
+      <div class="expected-label">This installs:</div>
+      <div class="expected-output">strands-agents        # Agent framework
+bedrock-agentcore     # AWS AgentCore SDK
+mcp                   # Model Context Protocol
+python-dotenv         # Environment variables</div>
+      <div class="checkbox-wrapper">
+        <label><input type="checkbox" onchange="markComplete('step4', this.checked)"> Done</label>
+      </div>
+    </div>
+
+    <div class="step" id="step5">
+      <div class="step-header">
+        <span class="step-number">5</span>
         <span class="step-title">Run Agent in Interactive Mode</span>
       </div>
       <div class="step-description">Test the agent locally before deploying to AWS. This connects directly to Teradata via MCP.</div>
@@ -524,7 +544,7 @@ You: quit</div>
         <p>The agent uses Claude via AWS Bedrock and queries Teradata through the MCP (Model Context Protocol) server. It can run SQL queries, analyze results, and provide insights.</p>
       </div>
       <div class="checkbox-wrapper">
-        <label><input type="checkbox" onchange="markComplete('step4', this.checked)"> Done</label>
+        <label><input type="checkbox" onchange="markComplete('step5', this.checked)"> Done</label>
       </div>
     </div>
   </div>
@@ -533,9 +553,9 @@ You: quit</div>
   <div class="section">
     <h2 class="section-title">☁️ Part 3: Deploy to AWS Bedrock AgentCore</h2>
 
-    <div class="step" id="step5">
+    <div class="step" id="step6">
       <div class="step-header">
-        <span class="step-number">5</span>
+        <span class="step-number">6</span>
         <span class="step-title">Check AgentCore Configuration</span>
       </div>
       <div class="step-description">View the AgentCore deployment configuration.</div>
@@ -550,13 +570,13 @@ You: quit</div>
         <strong>network_mode:</strong> PUBLIC — Accessible via AgentCore API</p>
       </div>
       <div class="checkbox-wrapper">
-        <label><input type="checkbox" onchange="markComplete('step5', this.checked)"> Done</label>
+        <label><input type="checkbox" onchange="markComplete('step6', this.checked)"> Done</label>
       </div>
     </div>
 
-    <div class="step" id="step6">
+    <div class="step" id="step7">
       <div class="step-header">
-        <span class="step-number">6</span>
+        <span class="step-number">7</span>
         <span class="step-title">Deploy the Agent</span>
       </div>
       <div class="step-description">Deploy your agent to AWS Bedrock AgentCore. This builds a container and pushes it to ECR.</div>
@@ -573,7 +593,7 @@ You: quit</div>
 Agent ID: tdworkshop-xxxxx
 Status: ACTIVE</div>
       <div class="checkbox-wrapper">
-        <label><input type="checkbox" onchange="markComplete('step6', this.checked)"> Done</label>
+        <label><input type="checkbox" onchange="markComplete('step7', this.checked)"> Done</label>
       </div>
     </div>
   </div>
@@ -582,9 +602,9 @@ Status: ACTIVE</div>
   <div class="section">
     <h2 class="section-title">⚡ Part 4: Invoke Your Deployed Agent</h2>
 
-    <div class="step" id="step7">
+    <div class="step" id="step8">
       <div class="step-header">
-        <span class="step-number">7</span>
+        <span class="step-number">8</span>
         <span class="step-title">Check Agent Status</span>
       </div>
       <div class="step-description">Verify your agent is running in AgentCore.</div>
@@ -593,13 +613,13 @@ Status: ACTIVE</div>
         <button class="copy-btn" onclick="copyCommand(this, 'agentcore status')">📋 Copy</button>
       </div>
       <div class="checkbox-wrapper">
-        <label><input type="checkbox" onchange="markComplete('step7', this.checked)"> Done</label>
+        <label><input type="checkbox" onchange="markComplete('step8', this.checked)"> Done</label>
       </div>
     </div>
 
-    <div class="step" id="step8">
+    <div class="step" id="step9">
       <div class="step-header">
-        <span class="step-number">8</span>
+        <span class="step-number">9</span>
         <span class="step-title">Invoke the Agent</span>
       </div>
       <div class="step-description">Send a query to your deployed agent via the AgentCore API.</div>
@@ -612,7 +632,7 @@ Status: ACTIVE</div>
         <p><code>python3 pretty_invoke.py "Show top 10 high-value customers at churn risk"</code></p>
       </div>
       <div class="checkbox-wrapper">
-        <label><input type="checkbox" onchange="markComplete('step8', this.checked)"> Done</label>
+        <label><input type="checkbox" onchange="markComplete('step9', this.checked)"> Done</label>
       </div>
     </div>
   </div>
