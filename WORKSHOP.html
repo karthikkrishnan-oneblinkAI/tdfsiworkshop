@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teradata + AWS AgentCore Workshop</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #1e1e1e;
+      color: #d4d4d4;
+      line-height: 1.6;
+      padding: 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 30px 20px;
+      background: linear-gradient(135deg, #FF6600 0%, #0052CC 100%);
+      border-radius: 12px;
+      margin-bottom: 30px;
+    }
+    .header h1 {
+      color: white;
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    .header .subtitle {
+      color: rgba(255,255,255,0.9);
+      font-size: 16px;
+    }
+    .logos {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 15px;
+      font-size: 24px;
+    }
+    .logo-badge {
+      background: rgba(255,255,255,0.2);
+      padding: 8px 16px;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    /* Info Box */
+    .info-box {
+      background: #2d2d2d;
+      border: 1px solid #404040;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 25px;
+    }
+    .info-box h3 {
+      color: #4ec9b0;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .info-box ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    .info-box li {
+      padding: 8px 0;
+      border-bottom: 1px solid #333;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .info-box li:last-child {
+      border-bottom: none;
+    }
+    .check-icon {
+      color: #6a9955;
+      font-weight: bold;
+    }
+
+    /* Section */
+    .section {
+      margin-bottom: 30px;
+    }
+    .section-title {
+      color: #569cd6;
+      font-size: 22px;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #569cd6;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Step Card */
+    .step {
+      background: #252526;
+      border-left: 4px solid #4ec9b0;
+      margin: 15px 0;
+      padding: 20px;
+      border-radius: 0 8px 8px 0;
+      transition: all 0.3s ease;
+    }
+    .step:hover {
+      background: #2a2a2b;
+    }
+    .step.completed {
+      border-left-color: #6a9955;
+      opacity: 0.8;
+    }
+    .step.completed .step-number {
+      background: #6a9955;
+    }
+    
+    .step-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .step-number {
+      background: #4ec9b0;
+      color: #1e1e1e;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    .step-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #ffffff;
+    }
+    .step-description {
+      color: #9d9d9d;
+      margin-bottom: 15px;
+      padding-left: 44px;
+    }
+
+    /* Command Box */
+    .command-box {
+      display: flex;
+      align-items: center;
+      background: #0d0d0d;
+      border-radius: 6px;
+      overflow: hidden;
+      margin: 10px 0 10px 44px;
+    }
+    .command-text {
+      flex: 1;
+      padding: 14px 16px;
+      font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
+      font-size: 14px;
+      color: #ce9178;
+      white-space: nowrap;
+      overflow-x: auto;
+    }
+    .copy-btn {
+      background: #0e639c;
+      color: white;
+      border: none;
+      padding: 14px 18px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+    .copy-btn:hover {
+      background: #1177bb;
+    }
+    .copy-btn.copied {
+      background: #6a9955;
+    }
+
+    /* Checkbox */
+    .checkbox-wrapper {
+      margin-top: 12px;
+      padding-left: 44px;
+    }
+    .checkbox-wrapper label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      color: #9d9d9d;
+      font-size: 14px;
+    }
+    .checkbox-wrapper input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      accent-color: #6a9955;
+    }
+
+    /* Expected Output */
+    .expected-output {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 6px;
+      padding: 12px 16px;
+      margin: 10px 0 0 44px;
+      font-family: 'Fira Code', monospace;
+      font-size: 12px;
+      color: #6a9955;
+      white-space: pre-wrap;
+    }
+    .expected-label {
+      color: #569cd6;
+      font-size: 12px;
+      margin: 10px 0 5px 44px;
+      font-weight: 500;
+    }
+
+    /* Tip Box */
+    .tip-box {
+      background: #1e3a5f;
+      border-left: 4px solid #569cd6;
+      padding: 15px;
+      margin: 15px 0 15px 44px;
+      border-radius: 0 8px 8px 0;
+    }
+    .tip-box .tip-title {
+      color: #569cd6;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    .tip-box p {
+      color: #9cdcfe;
+      font-size: 14px;
+    }
+
+    /* Warning Box */
+    .warning-box {
+      background: #3d2b1f;
+      border-left: 4px solid #ff9800;
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 0 8px 8px 0;
+    }
+    .warning-box .warning-title {
+      color: #ff9800;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    /* Progress Bar */
+    .progress-container {
+      background: #333;
+      border-radius: 10px;
+      height: 20px;
+      margin: 20px 0;
+      overflow: hidden;
+    }
+    .progress-bar {
+      background: linear-gradient(90deg, #4ec9b0, #6a9955);
+      height: 100%;
+      width: 0%;
+      transition: width 0.5s ease;
+      border-radius: 10px;
+    }
+    .progress-text {
+      text-align: center;
+      color: #9d9d9d;
+      font-size: 14px;
+      margin-top: 8px;
+    }
+
+    /* Done Banner */
+    .done-banner {
+      background: linear-gradient(135deg, #6a9955, #4ec9b0);
+      color: #1e1e1e;
+      padding: 30px;
+      border-radius: 12px;
+      text-align: center;
+      margin-top: 30px;
+      display: none;
+    }
+    .done-banner.show {
+      display: block;
+    }
+    .done-banner h2 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    /* File Tree */
+    .file-tree {
+      background: #1a1a1a;
+      border-radius: 8px;
+      padding: 15px 20px;
+      font-family: 'Fira Code', monospace;
+      font-size: 13px;
+      margin: 15px 0;
+    }
+    .file-tree .folder {
+      color: #dcb67a;
+    }
+    .file-tree .file {
+      color: #9cdcfe;
+      padding-left: 20px;
+    }
+    .file-tree .file-python {
+      color: #4ec9b0;
+    }
+    .file-tree .file-config {
+      color: #ce9178;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 0;
+    }
+    .tab {
+      background: #2d2d2d;
+      color: #9d9d9d;
+      border: none;
+      padding: 12px 20px;
+      cursor: pointer;
+      border-radius: 8px 8px 0 0;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+    .tab:hover {
+      background: #3d3d3d;
+    }
+    .tab.active {
+      background: #252526;
+      color: #4ec9b0;
+      font-weight: 600;
+    }
+    .tab-content {
+      display: none;
+      background: #252526;
+      padding: 20px;
+      border-radius: 0 8px 8px 8px;
+    }
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Collapsible */
+    .collapsible {
+      background: #2d2d2d;
+      border: 1px solid #404040;
+      border-radius: 8px;
+      margin: 15px 0;
+    }
+    .collapsible-header {
+      padding: 15px 20px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #4ec9b0;
+      font-weight: 600;
+    }
+    .collapsible-header:hover {
+      background: #333;
+    }
+    .collapsible-content {
+      display: none;
+      padding: 0 20px 20px 20px;
+    }
+    .collapsible.open .collapsible-content {
+      display: block;
+    }
+    .collapsible .arrow {
+      transition: transform 0.3s;
+    }
+    .collapsible.open .arrow {
+      transform: rotate(90deg);
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      body { padding: 10px; }
+      .header h1 { font-size: 22px; }
+      .step { padding: 15px; }
+      .command-box { flex-direction: column; }
+      .copy-btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <h1>🚀 Building Agentic AI with Teradata & AWS</h1>
+    <div class="subtitle">Hands-on Workshop: MCP Server + Bedrock AgentCore</div>
+    <div class="logos">
+      <span class="logo-badge">🟠 Teradata</span>
+      <span class="logo-badge">☁️ AWS</span>
+    </div>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+  <div class="progress-text" id="progressText">0 of 8 steps completed</div>
+
+  <!-- What's Already Set Up -->
+  <div class="info-box">
+    <h3>✅ What's Already Configured For You</h3>
+    <ul>
+      <li><span class="check-icon">✓</span> <strong>Teradata Instance</strong> — Shared cluster with banking data (10K customers, $765M deposits)</li>
+      <li><span class="check-icon">✓</span> <strong>AWS IAM Role</strong> — EC2 has permissions for Bedrock, ECR, AgentCore</li>
+      <li><span class="check-icon">✓</span> <strong>Environment Variables</strong> — Database connection string in .env file</li>
+      <li><span class="check-icon">✓</span> <strong>Python Environment</strong> — All dependencies pre-installed (strands, bedrock-agentcore, etc.)</li>
+      <li><span class="check-icon">✓</span> <strong>AgentCore Config</strong> — .bedrock_agentcore.yaml ready for deployment</li>
+    </ul>
+  </div>
+
+  <!-- Workshop Files -->
+  <div class="collapsible" onclick="toggleCollapsible(this)">
+    <div class="collapsible-header">
+      <span>📁 Workshop Files Overview</span>
+      <span class="arrow">▶</span>
+    </div>
+    <div class="collapsible-content">
+      <div class="file-tree">
+        <div class="folder">📁 workshop/tdmcpagentcore/</div>
+        <div class="file file-python">├── agent.py                    # Main Teradata agent</div>
+        <div class="file file-python">├── customer_retention_agent.py # Churn prevention agent</div>
+        <div class="file file-python">├── credit_risk_agent.py        # Credit risk analysis</div>
+        <div class="file file-python">├── wealth_management_agent.py  # Wealth advisory agent</div>
+        <div class="file file-config">├── .env                        # Database connection</div>
+        <div class="file file-config">├── .bedrock_agentcore.yaml     # AgentCore config</div>
+        <div class="file file-python">└── pretty_invoke.py            # Helper for testing</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SECTION 1: EXPLORE ============ -->
+  <div class="section">
+    <h2 class="section-title">🔍 Part 1: Explore the Environment</h2>
+
+    <div class="step" id="step1">
+      <div class="step-header">
+        <span class="step-number">1</span>
+        <span class="step-title">Open the Terminal</span>
+      </div>
+      <div class="step-description">
+        Press <strong>Ctrl+`</strong> (backtick) or use the menu: Terminal → New Terminal
+      </div>
+      <div class="checkbox-wrapper">
+        <label><input type="checkbox" onchange="markComplete('step1', this.checked)"> Done</label>
+      </div>
+    </div>
+
+    <div class="step" id="step2">
+      <div class="step-header">
+        <span class="step-number">2</span>
+        <span class="step-title">Navigate to Workshop Directory</span>
+      </div>
+      <div class="step-description">Go to the workshop folder where all agent code is located.</div>
+      <div class="command-box">
+        <code class="command-text">cd ~/workshop/tdmcpagentcore</code>
+        <button class="copy-btn" onclick="copyCommand(this, 'cd ~/workshop/tdmcpagentcore')">📋 Copy</button>
+      </div>
+      <div class="checkbox-wrapper">
+        <label><input type="checkbox" onchange="markComplete('step2', this.checked)"> Done</label>
+      </div>
+    </div>
+
+    <div class="step" id="step3">
+      <div class="step-header">
+        <span class="step-number">3</span>
+        <span class="step-title">Verify Teradata Connection</span>
+      </div>
+      <div class="step-description">Check that your environment is configured with the Teradata connection string.</div>
+      <div class="command-box">
+        <code class="command-text">cat .env</code>
+        <button class="copy-btn" onclick="copyCommand(this, 'cat .env')">📋 Copy</button>
+      </div>
+      <div class="expected-label">Expected output:</div>
+      <div class="expected-output">TERADATA_DATABASE_URI=teradatasql://user:pass@host/database</div>
+      <div class="tip-box">
+        <div class="tip-title">💡 What is this?</div>
+        <p>The Teradata MCP Server uses this connection string to connect to the shared Teradata cluster containing banking customer data.</p>
+      </div>
+      <div class="checkbox-wrapper">
+        <label><input type="checkbox" onchange="markComplete('step3', this.checked)"> Done</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SECTION 2: TEST LOCALLY ============ -->
+  <div class="section">
+    <h2 class="section-title">🧪 Part 2: Test the Agent Locally</h2>
+
+    <div class="step" id="step4">
+      <div class="step-header">
+        <span class="step-number">4</span>
+        <span class="step-title">Run Agent in Interactive Mode</span>
+      </div>
+      <div class="step-description">Test the agent locally before deploying to AWS. This connects directly to Teradata via MCP.</div>
+      <div class="command-box">
+        <code class="command-text">python3 agent.py --interactive</code>
+        <button class="copy-btn" onclick="copyCommand(this, 'python3 agent.py --interactive')">📋 Copy</button>
+      </div>
+      <div class="expected-label">Try these queries:</div>
+      <div class="expected-output">You: What databases are available?
+You: Show me customer churn statistics by country
+You: Find high-value customers with balance > $100,000
+You: quit</div>
+      <div class="tip-box">
+        <div class="tip-title">💡 What's happening?</div>
+        <p>The agent uses Claude via AWS Bedrock and queries Teradata through the MCP (Model Context Protocol) server. It can run SQL queries, analyze results, and provide insights.</p>
+      </div>
+      <div class="checkbox-wrapper">
+        <label><input type="checkbox" onchange="markComplete('step4', this.checked)"> Done</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SECTION 3: DEPLOY TO AGENTCORE ============ -->
+  <div class="section">
+    <h2 class="section-title">☁️ Part 3: Deploy to AWS Bedrock AgentCore</h2>
+
+    <div class="step" id="step5">
+      <div class="step-header">
+        <span class="step-number">5</span>
+        <span class="step-title">Check AgentCore Configuration</span>
+      </div>
+      <div class="step-description">View the AgentCore deployment configuration.</div>
+      <div class="command-box">
+        <code class="command-text">cat .bedrock_agentcore.yaml</code>
+        <button class="copy-btn" onclick="copyCommand(this, 'cat .bedrock_agentcore.yaml')">📋 Copy</button>
+      </div>
+      <div class="tip-box">
+        <div class="tip-title">💡 Key settings</div>
+        <p><strong>deployment_type:</strong> container — Agent runs as a Docker container<br>
+        <strong>platform:</strong> linux/arm64 — Optimized for AWS Graviton<br>
+        <strong>network_mode:</strong> PUBLIC — Accessible via AgentCore API</p>
+      </div>
+      <div class="checkbox-wrapper">
+        <label><input type="checkbox" onchange="markComplete('step5', this.checked)"> Done</label>
+      </div>
+    </div>
+
+    <div class="step" id="step6">
+      <div class="step-header">
+        <span class="step-number">6</span>
+        <span class="step-title">Deploy the Agent</span>
+      </div>
+      <div class="step-description">Deploy your agent to AWS Bedrock AgentCore. This builds a container and pushes it to ECR.</div>
+      <div class="command-box">
+        <code class="command-text">agentcore deploy</code>
+        <button class="copy-btn" onclick="copyCommand(this, 'agentcore deploy')">📋 Copy</button>
+      </div>
+      <div class="warning-box">
+        <div class="warning-title">⏱️ This takes 3-5 minutes</div>
+        <p>The deployment process: packages code → builds Docker image → pushes to ECR → deploys to AgentCore</p>
+      </div>
+      <div class="expected-label">Success output:</div>
+      <div class="expected-output">✓ Agent deployed successfully!
+Agent ID: tdworkshop-xxxxx
+Status: ACTIVE</div>
+      <div class="checkbox-wrapper">
+        <label><input type="checkbox" onchange="markComplete('step6', this.checked)"> Done</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SECTION 4: INVOKE THE AGENT ============ -->
+  <div class="section">
+    <h2 class="section-title">⚡ Part 4: Invoke Your Deployed Agent</h2>
+
+    <div class="step" id="step7">
+      <div class="step-header">
+        <span class="step-number">7</span>
+        <span class="step-title">Check Agent Status</span>
+      </div>
+      <div class="step-description">Verify your agent is running in AgentCore.</div>
+      <div class="command-box">
+        <code class="command-text">agentcore status</code>
+        <button class="copy-btn" onclick="copyCommand(this, 'agentcore status')">📋 Copy</button>
+      </div>
+      <div class="checkbox-wrapper">
+        <label><input type="checkbox" onchange="markComplete('step7', this.checked)"> Done</label>
+      </div>
+    </div>
+
+    <div class="step" id="step8">
+      <div class="step-header">
+        <span class="step-number">8</span>
+        <span class="step-title">Invoke the Agent</span>
+      </div>
+      <div class="step-description">Send a query to your deployed agent via the AgentCore API.</div>
+      <div class="command-box">
+        <code class="command-text">agentcore invoke '{"prompt": "Show customer churn rate by country"}'</code>
+        <button class="copy-btn" onclick="copyCommand(this, `agentcore invoke '{\"prompt\": \"Show customer churn rate by country\"}'`)">📋 Copy</button>
+      </div>
+      <div class="tip-box">
+        <div class="tip-title">💡 Pro tip: Use pretty_invoke for formatted output</div>
+        <p><code>python3 pretty_invoke.py "Show top 10 high-value customers at churn risk"</code></p>
+      </div>
+      <div class="checkbox-wrapper">
+        <label><input type="checkbox" onchange="markComplete('step8', this.checked)"> Done</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ BONUS: SPECIALIZED AGENTS ============ -->
+  <div class="section">
+    <h2 class="section-title">🎯 Bonus: Try Specialized Agents</h2>
+    
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('retention')">Customer Retention</button>
+      <button class="tab" onclick="showTab('credit')">Credit Risk</button>
+      <button class="tab" onclick="showTab('wealth')">Wealth Management</button>
+    </div>
+
+    <div class="tab-content active" id="retention">
+      <h4 style="color: #4ec9b0; margin-bottom: 10px;">🚨 Customer Retention Agent</h4>
+      <p style="color: #9d9d9d; margin-bottom: 15px;">Focus: Reduce 20.37% churn rate, protect $765M deposits</p>
+      <div class="command-box" style="margin-left: 0;">
+        <code class="command-text">python3 customer_retention_agent.py --interactive</code>
+        <button class="copy-btn" onclick="copyCommand(this, 'python3 customer_retention_agent.py --interactive')">📋 Copy</button>
+      </div>
+      <div style="margin-top: 15px;">
+        <strong style="color: #569cd6;">Sample queries:</strong>
+        <ul style="color: #9d9d9d; margin-top: 10px; padding-left: 20px;">
+          <li>"Show high-value customers at immediate churn risk"</li>
+          <li>"Calculate revenue impact of losing top 50 at-risk customers"</li>
+          <li>"Analyze churn patterns by geography"</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tab-content" id="credit">
+      <h4 style="color: #4ec9b0; margin-bottom: 10px;">💳 Credit Risk Agent</h4>
+      <p style="color: #9d9d9d; margin-bottom: 15px;">Focus: Portfolio risk analysis, lending optimization</p>
+      <div class="command-box" style="margin-left: 0;">
+        <code class="command-text">python3 credit_risk_agent.py --interactive</code>
+        <button class="copy-btn" onclick="copyCommand(this, 'python3 credit_risk_agent.py --interactive')">📋 Copy</button>
+      </div>
+      <div style="margin-top: 15px;">
+        <strong style="color: #569cd6;">Sample queries:</strong>
+        <ul style="color: #9d9d9d; margin-top: 10px; padding-left: 20px;">
+          <li>"Analyze credit risk distribution across countries"</li>
+          <li>"Identify customers suitable for credit limit increases"</li>
+          <li>"Show portfolio risk by customer segment"</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tab-content" id="wealth">
+      <h4 style="color: #4ec9b0; margin-bottom: 10px;">💎 Wealth Management Agent</h4>
+      <p style="color: #9d9d9d; margin-bottom: 15px;">Focus: High-net-worth customers, revenue optimization</p>
+      <div class="command-box" style="margin-left: 0;">
+        <code class="command-text">python3 wealth_management_agent.py --interactive</code>
+        <button class="copy-btn" onclick="copyCommand(this, 'python3 wealth_management_agent.py --interactive')">📋 Copy</button>
+      </div>
+      <div style="margin-top: 15px;">
+        <strong style="color: #569cd6;">Sample queries:</strong>
+        <ul style="color: #9d9d9d; margin-top: 10px; padding-left: 20px;">
+          <li>"Find high-income customers with low balances - acquisition targets"</li>
+          <li>"Identify cross-selling opportunities for wealthy customers"</li>
+          <li>"Analyze wealth distribution across markets"</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Architecture Diagram -->
+  <div class="collapsible" onclick="toggleCollapsible(this)">
+    <div class="collapsible-header">
+      <span>📐 Architecture Overview</span>
+      <span class="arrow">▶</span>
+    </div>
+    <div class="collapsible-content">
+      <pre style="color: #9cdcfe; font-size: 13px; line-height: 1.8;">
+┌─────────────────────────────────────────────────────────────────┐
+│                      Your Workshop Environment                   │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│  ┌──────────────┐     ┌──────────────┐     ┌──────────────────┐ │
+│  │   VS Code    │────▶│   Agent.py   │────▶│  Bedrock Claude  │ │
+│  │   (You!)     │     │  (Strands)   │     │   (LLM Brain)    │ │
+│  └──────────────┘     └──────┬───────┘     └──────────────────┘ │
+│                              │                                   │
+│                              ▼                                   │
+│                     ┌────────────────┐                          │
+│                     │  Teradata MCP  │                          │
+│                     │    Server      │                          │
+│                     └────────┬───────┘                          │
+│                              │                                   │
+└──────────────────────────────┼───────────────────────────────────┘
+                               │
+                               ▼
+                    ┌──────────────────┐
+                    │  Teradata Cloud  │
+                    │  (Banking Data)  │
+                    │   10K Customers  │
+                    │   $765M Deposits │
+                    └──────────────────┘
+      </pre>
+    </div>
+  </div>
+
+  <!-- Done Banner -->
+  <div class="done-banner" id="doneBanner">
+    <h2>🎉 Workshop Complete!</h2>
+    <p>You've successfully built and deployed an Agentic AI workflow with Teradata MCP and AWS Bedrock AgentCore!</p>
+    <p style="margin-top: 15px; font-size: 14px;">Questions? Ask the instructors or connect with us on Discord.</p>
+  </div>
+
+  <!-- Help Section -->
+  <div class="info-box" style="margin-top: 30px;">
+    <h3>❓ Need Help?</h3>
+    <ul>
+      <li><span class="check-icon">→</span> <strong>Connection issues?</strong> Check your .env file has the correct TERADATA_DATABASE_URI</li>
+      <li><span class="check-icon">→</span> <strong>Deploy failed?</strong> Run <code>agentcore logs</code> to see error details</li>
+      <li><span class="check-icon">→</span> <strong>Agent not responding?</strong> Check status with <code>agentcore status</code></li>
+      <li><span class="check-icon">→</span> <strong>Still stuck?</strong> Raise your hand! Our instructors are here to help 🙋</li>
+    </ul>
+  </div>
+
+  <script>
+    // Copy to clipboard
+    function copyCommand(btn, text) {
+      navigator.clipboard.writeText(text).then(() => {
+        const originalText = btn.textContent;
+        btn.textContent = '✓ Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+
+    // Mark step complete
+    function markComplete(stepId, isComplete) {
+      const step = document.getElementById(stepId);
+      if (isComplete) {
+        step.classList.add('completed');
+      } else {
+        step.classList.remove('completed');
+      }
+      updateProgress();
+    }
+
+    // Update progress bar
+    function updateProgress() {
+      const checkboxes = document.querySelectorAll('.step input[type="checkbox"]');
+      const completed = Array.from(checkboxes).filter(cb => cb.checked).length;
+      const total = checkboxes.length;
+      const percentage = (completed / total) * 100;
+      
+      document.getElementById('progressBar').style.width = percentage + '%';
+      document.getElementById('progressText').textContent = `${completed} of ${total} steps completed`;
+      
+      // Show done banner when all complete
+      document.getElementById('doneBanner').classList.toggle('show', completed === total);
+    }
+
+    // Tab switching
+    function showTab(tabId) {
+      // Hide all tabs and content
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      
+      // Show selected
+      document.querySelector(`[onclick="showTab('${tabId}')"]`).classList.add('active');
+      document.getElementById(tabId).classList.add('active');
+    }
+
+    // Collapsible toggle
+    function toggleCollapsible(element) {
+      element.classList.toggle('open');
+    }
+
+    // Initialize
+    updateProgress();
+  </script>
+
+</body>
+</html>
