@@ -477,6 +477,35 @@
       transform: rotate(90deg);
     }
 
+    /* File Tree */
+    .file-tree {
+      background: #1a1a1a;
+      border-radius: 8px;
+      padding: 15px 20px;
+      font-family: 'Fira Code', 'Consolas', monospace;
+      font-size: 13px;
+    }
+    .file-tree .folder {
+      color: #dcb67a;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+    .file-item {
+      display: block;
+      color: #9cdcfe;
+      padding: 6px 12px;
+      margin: 2px 0;
+      margin-left: 15px;
+    }
+    .file-item .file-icon {
+      margin-right: 8px;
+    }
+    .file-item .file-desc {
+      color: #6a9955;
+      font-size: 11px;
+      margin-left: 10px;
+    }
+
     /* Query Card */
     .query-card {
       background: #1a1a1a;
@@ -624,6 +653,41 @@
     </ul>
   </div>
 
+  <!-- Workshop Files with Clickable Links -->
+  <div class="collapsible" onclick="toggleCollapsible(this)">
+    <div class="collapsible-header">
+      <span>📁 Workshop Files</span>
+      <span class="arrow">▶</span>
+    </div>
+    <div class="collapsible-content">
+      <p style="color: #9d9d9d; margin-bottom: 15px; font-size: 13px;">👈 Click any file in the <strong>Explorer panel</strong> on the left to open it.</p>
+      <div class="file-tree">
+        <div class="folder">📁 /home/ubuntu/workshop/tdfsiworkshop/</div>
+        <div class="file-item">
+          <span class="file-icon">🐍</span> agent.py <span class="file-desc">— Main Teradata agent</span>
+        </div>
+        <div class="file-item">
+          <span class="file-icon">🐍</span> customer_retention_agent.py <span class="file-desc">— Churn prevention specialist</span>
+        </div>
+        <div class="file-item">
+          <span class="file-icon">🐍</span> credit_risk_agent.py <span class="file-desc">— Credit risk analysis</span>
+        </div>
+        <div class="file-item">
+          <span class="file-icon">🐍</span> wealth_management_agent.py <span class="file-desc">— Wealth advisory agent</span>
+        </div>
+        <div class="file-item">
+          <span class="file-icon">⚙️</span> .env <span class="file-desc">— Database connection string</span>
+        </div>
+        <div class="file-item">
+          <span class="file-icon">⚙️</span> .bedrock_agentcore.yaml <span class="file-desc">— AgentCore deployment config</span>
+        </div>
+        <div class="file-item">
+          <span class="file-icon">📄</span> requirements.txt <span class="file-desc">— Python dependencies</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- ============ SECTION 1: EXPLORE ============ -->
   <div class="section">
     <h2 class="section-title">🔍 Part 1: Explore the Environment</h2>
@@ -712,7 +776,9 @@
         <span class="step-number">5</span>
         <span class="step-title">Examine the Agent Code</span>
       </div>
-      <div class="step-description">Open <code>agent.py</code> in VS Code (click on it in the file explorer) and review the key components:</div>
+      <div class="step-description">
+        Open <code>agent.py</code> from the Explorer panel on the left 👈 and review the key components:
+      </div>
       
       <div class="code-block">
         <div class="code-header">
@@ -965,7 +1031,10 @@ Status: ACTIVE</div>
 
       <div class="tab-content active" id="retention">
         <h4 style="color: #4ec9b0; margin-bottom: 10px;">Customer Retention Agent</h4>
-        <p style="color: #9d9d9d; margin-bottom: 15px;"><strong>Focus:</strong> Reduce 20.37% churn rate, protect $765M deposits</p>
+        <p style="color: #9d9d9d; margin-bottom: 15px;">
+          <strong>Focus:</strong> Reduce 20.37% churn rate, protect $765M deposits
+          <span style="color: #569cd6; margin-left: 10px; font-size: 12px;">📄 customer_retention_agent.py</span>
+        </p>
         <div class="command-box no-indent">
           <code class="command-text">python3 customer_retention_agent.py --interactive</code>
           <button class="copy-btn" onclick="copyCommand(this, 'python3 customer_retention_agent.py --interactive')">📋 Copy</button>
@@ -983,7 +1052,10 @@ Status: ACTIVE</div>
 
       <div class="tab-content" id="credit">
         <h4 style="color: #4ec9b0; margin-bottom: 10px;">Credit Risk Agent</h4>
-        <p style="color: #9d9d9d; margin-bottom: 15px;"><strong>Focus:</strong> Portfolio risk analysis, lending optimization</p>
+        <p style="color: #9d9d9d; margin-bottom: 15px;">
+          <strong>Focus:</strong> Portfolio risk analysis, lending optimization
+          <span style="color: #569cd6; margin-left: 10px; font-size: 12px;">📄 credit_risk_agent.py</span>
+        </p>
         <div class="command-box no-indent">
           <code class="command-text">python3 credit_risk_agent.py --interactive</code>
           <button class="copy-btn" onclick="copyCommand(this, 'python3 credit_risk_agent.py --interactive')">📋 Copy</button>
@@ -1001,7 +1073,10 @@ Status: ACTIVE</div>
 
       <div class="tab-content" id="wealth">
         <h4 style="color: #4ec9b0; margin-bottom: 10px;">Wealth Management Agent</h4>
-        <p style="color: #9d9d9d; margin-bottom: 15px;"><strong>Focus:</strong> High-net-worth customers, revenue optimization</p>
+        <p style="color: #9d9d9d; margin-bottom: 15px;">
+          <strong>Focus:</strong> High-net-worth customers, revenue optimization
+          <span style="color: #569cd6; margin-left: 10px; font-size: 12px;">📄 wealth_management_agent.py</span>
+        </p>
         <div class="command-box no-indent">
           <code class="command-text">python3 wealth_management_agent.py --interactive</code>
           <button class="copy-btn" onclick="copyCommand(this, 'python3 wealth_management_agent.py --interactive')">📋 Copy</button>
