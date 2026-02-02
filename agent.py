@@ -50,7 +50,10 @@ server_params = StdioServerParameters(
     env=teradata_config["env"]
 )
 
-teradata_tool = MCPClient(lambda: stdio_client(server_params))
+#teradata_tool = MCPClient(lambda: stdio_client(server_params))
+teradata_tool = MCPClient(lambda: stdio_client(server_params), startup_timeout=300)
+
+
 
 # AgentCore app
 app = BedrockAgentCoreApp()
