@@ -153,7 +153,7 @@ if submit and query:
                 capture_output=True,
                 text=True,
                 timeout=90,
-                cwd='/home/ubuntu/workshop/tdmcpagentcore'
+                cwd='/home/ubuntu/workshop/tdfsiworkshop'  # CORRECT!
             )
             
             if result.returncode == 0:
