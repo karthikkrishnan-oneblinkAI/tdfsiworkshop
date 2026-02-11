@@ -4,7 +4,6 @@ import json
 import ast
 import time
 
-# MUST be first Streamlit command
 st.set_page_config(
     page_title="Banking Intelligence Assistant",
     page_icon="💼",
@@ -12,37 +11,47 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ─── Custom CSS — works on BOTH light and dark Streamlit themes ───
+# ═══════════════════════════════════════════════════════════
+# ALL STYLING IN ONE PLACE — forces dark theme via CSS
+# No config.toml needed
+# ═══════════════════════════════════════════════════════════
 st.markdown("""
 <style>
-    /* ═══════════════════════════════════════════════
-       FORCE DARK BACKGROUND everywhere
-       ═══════════════════════════════════════════════ */
-    .stApp, .main, [data-testid="stAppViewContainer"],
-    [data-testid="stHeader"], [data-testid="stToolbar"],
-    .block-container, [data-testid="stMainBlockContainer"] {
+    /* ── FORCE DARK BACKGROUND ON EVERYTHING ── */
+    html, body, .stApp,
+    [data-testid="stAppViewContainer"],
+    [data-testid="stHeader"],
+    [data-testid="stToolbar"],
+    [data-testid="stMainBlockContainer"],
+    [data-testid="stBottomBlockContainer"],
+    .main, .block-container,
+    header, footer {
         background-color: #0f1419 !important;
         color: #c9d1d9 !important;
     }
-    header[data-testid="stHeader"] {
-        background-color: #0f1419 !important;
-    }
+    /* Kill any white flashes */
+    .stApp > header { background: transparent !important; }
+    [data-testid="stDecoration"] { display: none !important; }
 
-    /* ═══════════════════════════════════════════════
-       ALL LABELS — bright orange, always visible
-       ═══════════════════════════════════════════════ */
-    label, .stTextInput label, .stTextArea label,
+    /* ── FORM LABELS — bright orange ── */
+    label, p, span,
+    .stTextInput label, .stTextArea label,
     .stTextInput label p, .stTextArea label p,
     [data-testid="stWidgetLabel"] label,
-    [data-testid="stWidgetLabel"] p {
+    [data-testid="stWidgetLabel"] p,
+    [data-testid="stWidgetLabel"] span,
+    .stFormSubmitButton label {
+        color: #c9d1d9 !important;
+    }
+    .stTextInput > label, .stTextArea > label,
+    .stTextInput > label p, .stTextArea > label p {
         color: #ff8c00 !important;
-        font-weight: 600 !important;
+        font-weight: 700 !important;
         font-size: 15px !important;
     }
 
-    /* ═══════════════════════════════════════════════
-       TEXT INPUTS & TEXT AREAS
-       ═══════════════════════════════════════════════ */
+    /* ── TEXT INPUTS & TEXTAREAS ── */
+    input, textarea,
     .stTextInput input, .stTextArea textarea,
     .stTextInput > div > div > input,
     .stTextArea > div > div > textarea {
@@ -51,87 +60,59 @@ st.markdown("""
         border: 2px solid #3d4f65 !important;
         border-radius: 8px !important;
         font-size: 15px !important;
+        caret-color: #ff8c00 !important;
     }
-    .stTextInput input::placeholder, .stTextArea textarea::placeholder {
-        color: #6b7f96 !important;
+    input::placeholder, textarea::placeholder {
+        color: #5a6f85 !important;
     }
-    .stTextInput input:focus, .stTextArea textarea:focus {
+    input:focus, textarea:focus {
         border-color: #ff8c00 !important;
-        box-shadow: 0 0 0 2px rgba(255, 140, 0, 0.3) !important;
+        box-shadow: 0 0 0 2px rgba(255,140,0,0.3) !important;
     }
-    /* Eye icon for password field */
-    .stTextInput button {
-        color: #8b949e !important;
-    }
+    /* Password eye icon */
+    .stTextInput button svg { color: #8b949e !important; fill: #8b949e !important; }
 
-    /* ═══════════════════════════════════════════════
-       BODY TEXT & MARKDOWN
-       ═══════════════════════════════════════════════ */
+    /* ── MARKDOWN TEXT ── */
     .stMarkdown, .stMarkdown p, .stMarkdown li,
-    .stMarkdown span, .stMarkdown div {
-        color: #c9d1d9 !important;
-    }
-    .stMarkdown strong, .stMarkdown b {
-        color: #f0f6fc !important;
-    }
-    .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
-        color: #f0f6fc !important;
-    }
-    .stMarkdown code {
-        color: #7ee787 !important;
-        background: #161b22 !important;
-    }
-    .stMarkdown a {
-        color: #58a6ff !important;
-    }
+    .stMarkdown span, .stMarkdown div,
+    .stMarkdown td, .stMarkdown th { color: #c9d1d9 !important; }
+    .stMarkdown strong, .stMarkdown b { color: #f0f6fc !important; }
+    .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 { color: #f0f6fc !important; }
+    .stMarkdown code { color: #7ee787 !important; background: #161b22 !important; padding: 2px 6px; border-radius: 4px; }
+    .stMarkdown a { color: #58a6ff !important; }
+    .stCaption, small { color: #8b949e !important; }
+    .stMarkdown hr { border-color: #30363d !important; }
 
-    /* ═══════════════════════════════════════════════
-       EXPANDERS
-       ═══════════════════════════════════════════════ */
-    [data-testid="stExpander"],
-    [data-testid="stExpander"] summary,
-    [data-testid="stExpander"] summary span,
-    .streamlit-expanderHeader {
-        color: #e2e8f0 !important;
-        background-color: #161b22 !important;
-        border-color: #30363d !important;
-    }
-    [data-testid="stExpander"] div[data-testid="stExpanderDetails"],
-    .streamlit-expanderContent {
-        background-color: #161b22 !important;
-        color: #c9d1d9 !important;
-    }
-    [data-testid="stExpander"] div[data-testid="stExpanderDetails"] p,
-    [data-testid="stExpander"] div[data-testid="stExpanderDetails"] li {
-        color: #c9d1d9 !important;
-    }
+    /* ── EXPANDERS ── */
+    [data-testid="stExpander"] { border-color: #30363d !important; background: #161b22 !important; border-radius: 8px !important; }
+    [data-testid="stExpander"] summary { background: #161b22 !important; color: #e2e8f0 !important; }
+    [data-testid="stExpander"] summary span { color: #e2e8f0 !important; }
+    [data-testid="stExpander"] summary svg { color: #8b949e !important; fill: #8b949e !important; }
+    [data-testid="stExpander"] [data-testid="stExpanderDetails"] { background: #161b22 !important; }
+    [data-testid="stExpander"] [data-testid="stExpanderDetails"] p,
+    [data-testid="stExpander"] [data-testid="stExpanderDetails"] li,
+    [data-testid="stExpander"] [data-testid="stExpanderDetails"] span { color: #c9d1d9 !important; }
 
-    /* ═══════════════════════════════════════════════
-       SIDEBAR
-       ═══════════════════════════════════════════════ */
+    /* ── SIDEBAR ── */
     section[data-testid="stSidebar"],
-    section[data-testid="stSidebar"] > div {
+    section[data-testid="stSidebar"] > div:first-child {
         background-color: #0d1117 !important;
     }
     section[data-testid="stSidebar"] p,
     section[data-testid="stSidebar"] span,
-    section[data-testid="stSidebar"] li,
-    section[data-testid="stSidebar"] label {
-        color: #c9d1d9 !important;
-    }
-    section[data-testid="stSidebar"] strong {
-        color: #f0f6fc !important;
-    }
+    section[data-testid="stSidebar"] li { color: #c9d1d9 !important; }
+    section[data-testid="stSidebar"] strong { color: #f0f6fc !important; }
     section[data-testid="stSidebar"] h1,
     section[data-testid="stSidebar"] h2,
-    section[data-testid="stSidebar"] h3 {
-        color: #f0f6fc !important;
-    }
-    section[data-testid="stSidebar"] hr {
-        border-color: #30363d !important;
-    }
+    section[data-testid="stSidebar"] h3 { color: #f0f6fc !important; }
+    section[data-testid="stSidebar"] hr { border-color: #30363d !important; }
+    section[data-testid="stSidebar"] .stCaption { color: #8b949e !important; }
+    /* Sidebar expanders */
+    section[data-testid="stSidebar"] [data-testid="stExpander"] { background: #0d1117 !important; border-color: #21262d !important; }
+    section[data-testid="stSidebar"] [data-testid="stExpander"] summary { background: #0d1117 !important; }
+    section[data-testid="stSidebar"] [data-testid="stExpander"] summary span { color: #8b949e !important; font-size: 13px !important; }
 
-    /* ══ SIDEBAR BUTTONS — bright orange, unmistakable ══ */
+    /* ══ SIDEBAR BUTTONS — bright orange gradient ══ */
     section[data-testid="stSidebar"] .stButton > button {
         background: linear-gradient(135deg, #ff6600 0%, #ff8533 100%) !important;
         color: #ffffff !important;
@@ -141,44 +122,34 @@ st.markdown("""
         font-size: 13px !important;
         padding: 10px 16px !important;
         width: 100% !important;
-        box-shadow: 0 2px 10px rgba(255, 102, 0, 0.35) !important;
+        box-shadow: 0 2px 10px rgba(255,102,0,0.35) !important;
         margin-bottom: 6px !important;
         letter-spacing: 0.3px !important;
+        cursor: pointer !important;
     }
     section[data-testid="stSidebar"] .stButton > button:hover {
         background: linear-gradient(135deg, #ff8533 0%, #ffa94d 100%) !important;
-        box-shadow: 0 4px 16px rgba(255, 102, 0, 0.5) !important;
+        box-shadow: 0 4px 16px rgba(255,102,0,0.5) !important;
         transform: translateY(-1px) !important;
     }
 
-    /* ══ SIDEBAR EXPANDERS ══ */
-    section[data-testid="stSidebar"] [data-testid="stExpander"],
-    section[data-testid="stSidebar"] [data-testid="stExpander"] summary {
-        background-color: #0d1117 !important;
-        border-color: #21262d !important;
-    }
-    section[data-testid="stSidebar"] [data-testid="stExpander"] summary span {
-        color: #8b949e !important;
-        font-size: 13px !important;
-    }
-
-    /* ═══════════════════════════════════════════════
-       MAIN BUTTONS
-       ═══════════════════════════════════════════════ */
-    /* Primary (Get Insights) */
-    button[data-testid="stBaseButton-primary"] {
+    /* ── MAIN BUTTONS ── */
+    button[data-testid="stBaseButton-primary"],
+    .stFormSubmitButton button {
         background: linear-gradient(135deg, #0052CC 0%, #2684FF 100%) !important;
         color: #ffffff !important;
         border: none !important;
         border-radius: 8px !important;
         font-weight: 700 !important;
         font-size: 14px !important;
-        box-shadow: 0 2px 10px rgba(0, 82, 204, 0.35) !important;
+        box-shadow: 0 2px 10px rgba(0,82,204,0.35) !important;
+        cursor: pointer !important;
     }
-    button[data-testid="stBaseButton-primary"]:hover {
-        box-shadow: 0 4px 16px rgba(0, 82, 204, 0.5) !important;
+    button[data-testid="stBaseButton-primary"]:hover,
+    .stFormSubmitButton button:hover {
+        box-shadow: 0 4px 16px rgba(0,82,204,0.5) !important;
     }
-    /* Secondary (Logout etc) */
+    /* Secondary (Logout) */
     button[data-testid="stBaseButton-secondary"] {
         color: #c9d1d9 !important;
         border-color: #30363d !important;
@@ -186,89 +157,47 @@ st.markdown("""
     }
     button[data-testid="stBaseButton-secondary"]:hover {
         background-color: #30363d !important;
-        border-color: #484f58 !important;
     }
 
-    /* ═══════════════════════════════════════════════
-       ALERTS
-       ═══════════════════════════════════════════════ */
-    [data-testid="stAlert"] {
-        color: inherit !important;
-    }
+    /* ── ALERTS ── */
+    [data-testid="stAlert"] p { color: inherit !important; }
 
-    /* ═══════════════════════════════════════════════
-       SPINNER
-       ═══════════════════════════════════════════════ */
-    .stSpinner, .stSpinner > div, .stSpinner > div > span {
-        color: #c9d1d9 !important;
-    }
+    /* ── SPINNER ── */
+    .stSpinner, .stSpinner > div, .stSpinner > div > span { color: #c9d1d9 !important; }
 
-    /* ═══════════════════════════════════════════════
+    /* ── CODE BLOCKS ── */
+    [data-testid="stCode"], pre, code { background-color: #0d1117 !important; color: #c9d1d9 !important; }
+
+    /* ══════════════════════════════════════════════════
        CUSTOM HTML COMPONENTS
-       ═══════════════════════════════════════════════ */
-
-    /* Hero banner */
+       ══════════════════════════════════════════════════ */
     .hero-banner {
         background: linear-gradient(135deg, #FF6600 0%, #0052CC 100%);
-        border-radius: 14px;
-        padding: 30px 34px;
-        margin-bottom: 24px;
+        border-radius: 14px; padding: 30px 34px; margin-bottom: 24px;
     }
-    .hero-banner h1 { color: #ffffff !important; font-size: 28px; margin-bottom: 6px; }
+    .hero-banner h1 { color: #fff !important; font-size: 28px; margin-bottom: 6px; }
     .hero-banner p { color: rgba(255,255,255,0.92) !important; font-size: 15px; margin: 0; }
     .logo-row { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
-    .logo-badge {
-        background: rgba(255,255,255,0.2);
-        padding: 5px 14px;
-        border-radius: 6px;
-        font-size: 12px;
-        font-weight: 600;
-        color: #ffffff !important;
-    }
+    .logo-badge { background: rgba(255,255,255,0.2); padding: 5px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; color: #fff !important; }
 
-    /* Login card */
     .login-card {
-        background: #161b22;
-        border: 1px solid #30363d;
-        border-radius: 14px;
-        padding: 32px;
-        margin-bottom: 20px;
+        background: #161b22; border: 1px solid #30363d; border-radius: 14px;
+        padding: 32px; margin-bottom: 20px;
     }
-    .login-card h2 { color: #f0f6fc !important; text-align: center; margin-bottom: 6px; }
+    .login-card h2 { color: #f0f6fc !important; text-align: center; margin-bottom: 6px; font-size: 22px; }
     .login-card p { color: #8b949e !important; text-align: center; font-size: 14px; }
 
-    /* Metric cards */
-    .metric-row {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 14px;
-        margin-bottom: 24px;
-    }
+    .metric-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
     @media (max-width: 768px) { .metric-row { grid-template-columns: repeat(2, 1fr); } }
-    .metric-card {
-        background: #161b22;
-        border: 1px solid #30363d;
-        border-radius: 12px;
-        padding: 18px;
-        text-align: center;
-    }
+    .metric-card { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 18px; text-align: center; }
     .metric-card .mv { font-size: 28px; font-weight: 700; color: #58a6ff; }
     .metric-card .ml { font-size: 10px; color: #8b949e; text-transform: uppercase; letter-spacing: 0.8px; margin-top: 2px; }
     .metric-card .ms { font-size: 11px; color: #ffa657; margin-top: 6px; }
 
-    /* Value banner */
-    .value-banner {
-        background: #161b22;
-        border: 1px solid #1f6feb;
-        border-left: 4px solid #1f6feb;
-        border-radius: 10px;
-        padding: 22px 26px;
-        margin-bottom: 22px;
-    }
+    .value-banner { background: #161b22; border: 1px solid #1f6feb; border-left: 4px solid #1f6feb; border-radius: 10px; padding: 22px 26px; margin-bottom: 22px; }
     .value-banner h3 { color: #58a6ff !important; font-size: 16px; margin-bottom: 10px; }
     .value-banner p { color: #c9d1d9 !important; font-size: 14px; line-height: 1.65; margin: 0; }
 
-    /* Speed table */
     .speed-table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 14px 0; font-size: 13px; }
     .speed-table th { text-align: left; padding: 10px 14px; color: #8b949e; border-bottom: 2px solid #30363d; font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; }
     .speed-table td { padding: 11px 14px; border-bottom: 1px solid #21262d; color: #c9d1d9; }
@@ -276,41 +205,22 @@ st.markdown("""
     .speed-table .new { color: #56d364; font-weight: 600; }
     .speed-table .impact { color: #e3b341; font-size: 12px; }
 
-    /* Category cards */
-    .cat-card {
-        background: #161b22;
-        border: 1px solid #30363d;
-        border-radius: 10px;
-        padding: 14px 16px;
-        margin-bottom: 8px;
-    }
+    .cat-card { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 14px 16px; margin-bottom: 8px; }
     .cat-card h4 { color: #58a6ff !important; font-size: 14px; margin: 0 0 5px 0; }
     .cat-card .cat-time { font-size: 11px; color: #ffa657 !important; margin-bottom: 5px; }
     .cat-card .cat-desc { color: #8b949e !important; font-size: 12px; line-height: 1.5; margin: 0; }
 
-    /* Timing badges */
-    .timing-badge {
-        display: inline-block; background: #0d3321; border: 1px solid #238636;
-        color: #56d364 !important; font-size: 12px; font-weight: 600;
-        padding: 4px 14px; border-radius: 20px; margin-left: 8px;
-    }
-    .timing-compare {
-        display: inline-block; background: #341a04; border: 1px solid #9e6a03;
-        color: #e3b341 !important; font-size: 11px;
-        padding: 3px 12px; border-radius: 20px; margin-left: 6px;
-    }
+    .timing-badge { display: inline-block; background: #0d3321; border: 1px solid #238636; color: #56d364 !important; font-size: 12px; font-weight: 600; padding: 4px 14px; border-radius: 20px; margin-left: 8px; }
+    .timing-compare { display: inline-block; background: #341a04; border: 1px solid #9e6a03; color: #e3b341 !important; font-size: 11px; padding: 3px 12px; border-radius: 20px; margin-left: 6px; }
 
-    /* Footer */
-    .footer-row {
-        display: flex; justify-content: center; gap: 28px;
-        padding: 22px 0 10px 0; border-top: 1px solid #21262d; margin-top: 36px;
-    }
+    .footer-row { display: flex; justify-content: center; gap: 28px; padding: 22px 0 10px 0; border-top: 1px solid #21262d; margin-top: 36px; }
     .footer-item { color: #484f58; font-size: 12px; }
 </style>
 """, unsafe_allow_html=True)
 
+
 # ═══════════════════════════════════════════════════
-# PASSWORD CHECK — with Enter key support
+# PASSWORD — Enter key submits via st.form
 # ═══════════════════════════════════════════════════
 def check_password():
     if 'authenticated' not in st.session_state:
@@ -331,11 +241,10 @@ def check_password():
         st.markdown("""
         <div class="login-card">
             <h2>🔐 Welcome</h2>
-            <p>Enter the workshop password to continue</p>
+            <p>Enter the workshop password to get started</p>
         </div>
         """, unsafe_allow_html=True)
 
-        # st.form allows Enter key to submit
         with st.form("login_form"):
             password = st.text_input("Workshop Password:", type="password", key="password_input")
             submitted = st.form_submit_button("🔓 Login", use_container_width=True, type="primary")
@@ -351,18 +260,17 @@ def check_password():
 
 check_password()
 
+
 # ═══════════════════════════════════════════════════
-# LOGGED-IN APP
+# MAIN APP
 # ═══════════════════════════════════════════════════
 
-# Header
 col_main, col_logout = st.columns([6, 1])
 with col_logout:
     if st.button("🚪 Logout"):
         st.session_state.authenticated = False
         st.rerun()
 
-# Hero
 st.markdown("""
 <div class="hero-banner">
     <h1>💼 Banking Intelligence Assistant</h1>
@@ -376,33 +284,15 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Metrics
 st.markdown("""
 <div class="metric-row">
-    <div class="metric-card">
-        <div class="mv">30s</div>
-        <div class="ml">Avg Query Time</div>
-        <div class="ms">vs 2-3 days traditional</div>
-    </div>
-    <div class="metric-card">
-        <div class="mv">10K</div>
-        <div class="ml">Customer Records</div>
-        <div class="ms">Real-time access</div>
-    </div>
-    <div class="metric-card">
-        <div class="mv">$765M</div>
-        <div class="ml">Deposits Monitored</div>
-        <div class="ms">Churn risk scoring</div>
-    </div>
-    <div class="metric-card">
-        <div class="mv">20.4%</div>
-        <div class="ml">Current Churn Rate</div>
-        <div class="ms">5% reduction = $2-5M saved</div>
-    </div>
+    <div class="metric-card"><div class="mv">30s</div><div class="ml">Avg Query Time</div><div class="ms">vs 2-3 days traditional</div></div>
+    <div class="metric-card"><div class="mv">10K</div><div class="ml">Customer Records</div><div class="ms">Real-time access</div></div>
+    <div class="metric-card"><div class="mv">$765M</div><div class="ml">Deposits Monitored</div><div class="ms">Churn risk scoring</div></div>
+    <div class="metric-card"><div class="mv">20.4%</div><div class="ml">Current Churn Rate</div><div class="ms">5% reduction = $2-5M saved</div></div>
 </div>
 """, unsafe_allow_html=True)
 
-# Value banner
 st.markdown("""
 <div class="value-banner">
     <h3>💡 Why This Matters</h3>
@@ -413,7 +303,6 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Speed comparison
 with st.expander("📊 Speed Comparison: MCP vs Traditional Analytics"):
     st.markdown("""
     <table class="speed-table">
@@ -425,7 +314,6 @@ with st.expander("📊 Speed Comparison: MCP vs Traditional Analytics"):
         <tr><td>Ad-hoc business question</td><td class="old">"Ask IT, wait days"</td><td class="new">~30 seconds</td><td class="impact">Self-serve for everyone</td></tr>
     </table>
     """, unsafe_allow_html=True)
-
     st.markdown("")
     st.markdown("**Expected Business Impact:**")
     st.markdown("""
@@ -447,112 +335,49 @@ with st.sidebar:
     st.markdown("### 📊 Analysis Categories")
     st.caption("Click an orange button to load a sample query.")
 
-    # ── Churn ──
-    st.markdown("""
-    <div class="cat-card">
-        <h4>🚨 Churn Analysis</h4>
-        <div class="cat-time">⏱ Traditional: 2-3 days → MCP: 30 seconds</div>
-        <p class="cat-desc">Identify at-risk customers before they leave. A 5% churn reduction saves $2-5M annually.</p>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown('<div class="cat-card"><h4>🚨 Churn Analysis</h4><div class="cat-time">⏱ Traditional: 2-3 days → MCP: 30 seconds</div><p class="cat-desc">Identify at-risk customers before they leave. A 5% churn reduction saves $2-5M annually.</p></div>', unsafe_allow_html=True)
     if st.button("🔥 Try: Highest churn risk", key="churn_btn"):
         st.session_state.query = "Show me customers with highest churn risk and calculate the revenue impact if we lose them"
         st.rerun()
     with st.expander("More churn questions"):
-        st.markdown("""
-        - Revenue impact of losing top 50 at-risk customers
-        - Churn patterns by geography with interventions
-        - Inactive customers who had high balances 6 months ago
-        """)
+        st.markdown("- Revenue impact of losing top 50 at-risk customers\n- Churn patterns by geography with interventions\n- Inactive customers who had high balances 6 months ago")
 
-    # ── Geographic ──
-    st.markdown("""
-    <div class="cat-card">
-        <h4>🌍 Geographic Intelligence</h4>
-        <div class="cat-time">⏱ Traditional: 4-6 hours → MCP: 30 seconds</div>
-        <p class="cat-desc">Compare France, Germany, Spain markets. Spot regional trends instantly.</p>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown('<div class="cat-card"><h4>🌍 Geographic Intelligence</h4><div class="cat-time">⏱ Traditional: 4-6 hours → MCP: 30 seconds</div><p class="cat-desc">Compare France, Germany, Spain markets. Spot regional trends instantly.</p></div>', unsafe_allow_html=True)
     if st.button("🔥 Try: Compare markets", key="geo_btn"):
         st.session_state.query = "Compare customer metrics across France, Germany, and Spain. Which market has the highest average balance?"
         st.rerun()
     with st.expander("More geographic questions"):
-        st.markdown("""
-        - Which market has highest average balance?
-        - Geographic hotspots with highest complaint volumes
-        - Regional service quality patterns
-        """)
+        st.markdown("- Which market has highest average balance?\n- Geographic hotspots with highest complaint volumes\n- Regional service quality patterns")
 
-    # ── Complaints ──
-    st.markdown("""
-    <div class="cat-card">
-        <h4>📞 Complaint Analysis</h4>
-        <div class="cat-time">⏱ Traditional: 3-5 days → MCP: 30 seconds</div>
-        <p class="cat-desc">15-20% of complaints lead to churn. Detect surges and root causes in real time.</p>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown('<div class="cat-card"><h4>📞 Complaint Analysis</h4><div class="cat-time">⏱ Traditional: 3-5 days → MCP: 30 seconds</div><p class="cat-desc">15-20% of complaints lead to churn. Detect surges and root causes in real time.</p></div>', unsafe_allow_html=True)
     if st.button("🔥 Try: Complaint patterns", key="complaint_btn"):
         st.session_state.query = "Analyze complaint patterns from the last 48 hours and identify any unusual spikes by product category"
         st.rerun()
     with st.expander("More complaint questions"):
-        st.markdown("""
-        - Top 3 complaint categories driving highest churn risk
-        - Customers with unresolved complaints + high churn probability
-        - Complaint resolution success rates by response type
-        """)
+        st.markdown("- Top 3 complaint categories driving highest churn risk\n- Customers with unresolved complaints + high churn probability\n- Complaint resolution success rates by response type")
 
-    # ── Credit Risk ──
-    st.markdown("""
-    <div class="cat-card">
-        <h4>💳 Credit Risk</h4>
-        <div class="cat-time">⏱ Traditional: 1-2 days → MCP: 30 seconds</div>
-        <p class="cat-desc">Portfolio risk analysis and lending optimization across your customer base.</p>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown('<div class="cat-card"><h4>💳 Credit Risk</h4><div class="cat-time">⏱ Traditional: 1-2 days → MCP: 30 seconds</div><p class="cat-desc">Portfolio risk analysis and lending optimization across your customer base.</p></div>', unsafe_allow_html=True)
     if st.button("🔥 Try: Credit risk portfolio", key="credit_btn"):
         st.session_state.query = "Analyze our credit risk portfolio. Show credit score distribution and identify customers suitable for credit limit increases."
         st.rerun()
     with st.expander("More credit risk questions"):
-        st.markdown("""
-        - Customers suitable for credit limit increases
-        - Portfolio risk concentration by segment
-        - Expected losses by geographic market
-        """)
+        st.markdown("- Customers suitable for credit limit increases\n- Portfolio risk concentration by segment\n- Expected losses by geographic market")
 
-    # ── High-Value ──
-    st.markdown("""
-    <div class="cat-card">
-        <h4>💎 High-Value Customers</h4>
-        <div class="cat-time">⏱ Traditional: 1-2 hours → MCP: 30 seconds</div>
-        <p class="cat-desc">Protect your most valuable relationships. Target retention and cross-sell.</p>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown('<div class="cat-card"><h4>💎 High-Value Customers</h4><div class="cat-time">⏱ Traditional: 1-2 hours → MCP: 30 seconds</div><p class="cat-desc">Protect your most valuable relationships. Target retention and cross-sell.</p></div>', unsafe_allow_html=True)
     if st.button("🔥 Try: Inactive high-value", key="wealth_btn"):
         st.session_state.query = "Find the top 20 customers by balance who have been inactive. These are high-value retention targets."
         st.rerun()
     with st.expander("More high-value questions"):
-        st.markdown("""
-        - High-income customers with low balances (acquisition targets)
-        - Cross-selling opportunities for wealthy customers
-        - Customers suitable for private banking upgrade
-        """)
+        st.markdown("- High-income customers with low balances (acquisition targets)\n- Cross-selling opportunities for wealthy customers\n- Customers suitable for private banking upgrade")
 
-    # ── Impact ──
     st.markdown("---")
     st.markdown("### 💰 Business Impact")
-    st.markdown("""
-    - **Churn Prevention:** $2-5M saved
-    - **Analyst Speed:** 10x faster
-    - **Decisions:** Real-time vs weekly
-    - **Access:** No SQL needed
-    """)
+    st.markdown("- **Churn Prevention:** $2-5M saved\n- **Analyst Speed:** 10x faster\n- **Decisions:** Real-time vs weekly\n- **Access:** No SQL needed")
 
 
 # ═══════════════════════════════════════════════════
 # QUERY INTERFACE
 # ═══════════════════════════════════════════════════
-
-# "Try this" button → text area state transfer
 if 'query' in st.session_state:
     st.session_state.query_input = st.session_state.query
     del st.session_state.query
@@ -569,7 +394,6 @@ with col1:
     submit = st.button("🔍 Get Insights", type="primary", use_container_width=True)
 
 
-# ─── Response extraction ───
 def extract_clean_response(raw_output):
     try:
         if "Response:" in raw_output:
@@ -585,12 +409,10 @@ def extract_clean_response(raw_output):
         import re
         match = re.search(r"'text':\s*[\"'](.+?)[\"']\s*}\s*]\s*}", raw_output, re.DOTALL)
         if match:
-            text = match.group(1).replace('\\n', '\n')
-            return text
+            return match.group(1).replace('\\n', '\n')
         return raw_output
 
 
-# ─── Query Execution ───
 if submit and query:
     start_time = time.time()
     with st.spinner("🤔 Querying Teradata via MCP + Claude — this may take 15-60 seconds..."):
@@ -598,17 +420,15 @@ if submit and query:
             payload = json.dumps({"prompt": query})
             result = subprocess.run(
                 ['/home/ubuntu/.local/bin/agentcore', 'invoke', payload],
-                capture_output=True,
-                text=True,
-                timeout=90,
+                capture_output=True, text=True, timeout=90,
                 cwd='/home/ubuntu/workshop/tdfsiworkshop'
             )
             elapsed = time.time() - start_time
 
             if result.returncode == 0:
                 st.markdown(f"""
-                <div style="display:flex; align-items:center; gap:8px; margin:12px 0 6px 0;">
-                    <span style="color:#56d364; font-size:16px; font-weight:600;">✅ Analysis Complete</span>
+                <div style="display:flex;align-items:center;gap:8px;margin:12px 0 6px 0;">
+                    <span style="color:#56d364;font-size:16px;font-weight:600;">✅ Analysis Complete</span>
                     <span class="timing-badge">⚡ {elapsed:.1f}s</span>
                     <span class="timing-compare">⏱ Traditional: hours to days</span>
                 </div>
@@ -645,7 +465,6 @@ if submit and query:
 elif submit:
     st.warning("⚠️ Please enter a question — or click an orange button in the sidebar →")
 
-# Footer
 st.markdown("""
 <div class="footer-row">
     <span class="footer-item">🟠 Teradata Vantage</span>
