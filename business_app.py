@@ -12,13 +12,112 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ─── Custom CSS for polished look ───
+# ─── Custom CSS ───
 st.markdown("""
 <style>
-    /* Main background and font */
-    .stApp {
-        background-color: #0e1117;
+    /* ═══════════════════════════════════════════════
+       GLOBAL TEXT & INPUT VISIBILITY FIXES
+       ═══════════════════════════════════════════════ */
+
+    /* Force all body text to be bright */
+    .stApp, .stApp p, .stApp span, .stApp li, .stApp div {
+        color: #e8eaed;
     }
+
+    /* All labels (Your Question, Password, etc.) */
+    .stApp label, .stApp .stTextArea label, .stApp .stTextInput label {
+        color: #e8eaed !important;
+        font-weight: 500 !important;
+        font-size: 14px !important;
+    }
+
+    /* Text inputs and text areas */
+    .stTextInput input, .stTextArea textarea {
+        color: #f0f0f0 !important;
+        background-color: #1c2333 !important;
+        border: 1px solid #3d4a5c !important;
+        caret-color: #4ec9b0 !important;
+    }
+    .stTextInput input::placeholder, .stTextArea textarea::placeholder {
+        color: #6b7b8d !important;
+    }
+    .stTextInput input:focus, .stTextArea textarea:focus {
+        border-color: #4ec9b0 !important;
+        box-shadow: 0 0 0 1px #4ec9b0 !important;
+    }
+
+    /* Buttons */
+    .stButton > button {
+        color: #ffffff !important;
+        font-weight: 500 !important;
+    }
+
+    /* Expander headers */
+    .streamlit-expanderHeader, .streamlit-expanderHeader p {
+        color: #c8d0da !important;
+        font-weight: 500 !important;
+    }
+
+    /* Expander content */
+    .streamlit-expanderContent, .streamlit-expanderContent p,
+    .streamlit-expanderContent li, .streamlit-expanderContent span {
+        color: #d0d6de !important;
+    }
+
+    /* Markdown text inside main area */
+    .stMarkdown p, .stMarkdown li, .stMarkdown span {
+        color: #e0e4ea;
+    }
+    .stMarkdown strong {
+        color: #ffffff;
+    }
+    .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
+        color: #f0f2f5 !important;
+    }
+    .stMarkdown code {
+        color: #4ec9b0;
+        background: #1a2030;
+    }
+
+    /* Sidebar text */
+    section[data-testid="stSidebar"] {
+        background-color: #111722;
+    }
+    section[data-testid="stSidebar"] p,
+    section[data-testid="stSidebar"] span,
+    section[data-testid="stSidebar"] li,
+    section[data-testid="stSidebar"] label,
+    section[data-testid="stSidebar"] .stMarkdown {
+        color: #c8d0da !important;
+    }
+    section[data-testid="stSidebar"] strong {
+        color: #ffffff !important;
+    }
+    section[data-testid="stSidebar"] h3 {
+        color: #e8eaed !important;
+    }
+    section[data-testid="stSidebar"] .stCaption, section[data-testid="stSidebar"] small {
+        color: #8892a4 !important;
+    }
+
+    /* Warning / Success / Error banners */
+    .stAlert p {
+        color: #1a1a2e !important;
+    }
+
+    /* Code blocks */
+    .stCodeBlock, .stCodeBlock code {
+        color: #d4d4d4 !important;
+    }
+
+    /* Spinner text */
+    .stSpinner > div > span {
+        color: #c8d0da !important;
+    }
+
+    /* ═══════════════════════════════════════════════
+       CUSTOM COMPONENT STYLES
+       ═══════════════════════════════════════════════ */
 
     /* Hero banner */
     .hero-banner {
@@ -34,7 +133,7 @@ st.markdown("""
         margin-bottom: 4px;
     }
     .hero-banner p {
-        color: rgba(255,255,255,0.9);
+        color: rgba(255,255,255,0.92) !important;
         font-size: 15px;
         margin: 0;
     }
@@ -50,7 +149,7 @@ st.markdown("""
         border-radius: 6px;
         font-size: 12px;
         font-weight: 600;
-        color: white;
+        color: white !important;
     }
 
     /* Metric cards */
@@ -78,13 +177,13 @@ st.markdown("""
     }
     .metric-card .metric-label {
         font-size: 11px;
-        color: #8892a4;
+        color: #9aa3b4 !important;
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
     .metric-card .metric-sub {
         font-size: 11px;
-        color: #ff9800;
+        color: #ffb74d !important;
         margin-top: 4px;
     }
 
@@ -97,12 +196,12 @@ st.markdown("""
         margin-bottom: 20px;
     }
     .value-banner h3 {
-        color: #3498db;
+        color: #5dade2 !important;
         font-size: 16px;
         margin-bottom: 10px;
     }
     .value-banner p {
-        color: #bdc3c7;
+        color: #d0d6de !important;
         font-size: 14px;
         line-height: 1.6;
         margin: 0;
@@ -118,7 +217,7 @@ st.markdown("""
     .speed-table th {
         text-align: left;
         padding: 10px 14px;
-        color: #8892a4;
+        color: #9aa3b4 !important;
         border-bottom: 1px solid #2a3040;
         font-size: 11px;
         text-transform: uppercase;
@@ -127,17 +226,17 @@ st.markdown("""
     .speed-table td {
         padding: 10px 14px;
         border-bottom: 1px solid #1a1f2e;
-        color: #d4d4d4;
+        color: #d4dae4 !important;
     }
     .speed-table .old {
-        color: #ff6b6b;
+        color: #ff8a80 !important;
     }
     .speed-table .new {
-        color: #4ec9b0;
+        color: #69f0ae !important;
         font-weight: 600;
     }
     .speed-table .impact {
-        color: #ffd93d;
+        color: #ffd54f !important;
         font-size: 11px;
     }
 
@@ -150,41 +249,29 @@ st.markdown("""
         margin-bottom: 10px;
     }
     .cat-card h4 {
-        color: #4ec9b0;
+        color: #4ec9b0 !important;
         font-size: 14px;
         margin-bottom: 6px;
     }
     .cat-card .cat-context {
         font-size: 11px;
-        color: #ff9800;
+        color: #ffb74d !important;
         margin-bottom: 6px;
         font-style: italic;
     }
     .cat-card p {
-        color: #8892a4;
+        color: #a0aab8 !important;
         font-size: 12px;
         margin: 0;
         line-height: 1.5;
     }
 
-    /* Insight result styling */
-    .insight-box {
-        background: #141820;
-        border: 1px solid #2a3040;
-        border-left: 4px solid #4ec9b0;
-        border-radius: 0 10px 10px 0;
-        padding: 24px;
-        margin-top: 16px;
-        line-height: 1.7;
-        color: #d4d4d4;
-    }
-
-    /* Timing badge */
+    /* Timing badges */
     .timing-badge {
         display: inline-block;
         background: #1a3a2a;
         border: 1px solid #2d6a4f;
-        color: #4ec9b0;
+        color: #69f0ae !important;
         font-size: 12px;
         padding: 4px 12px;
         border-radius: 20px;
@@ -194,7 +281,7 @@ st.markdown("""
         display: inline-block;
         background: #3d2b1f;
         border: 1px solid #664422;
-        color: #ff9800;
+        color: #ffb74d !important;
         font-size: 11px;
         padding: 3px 10px;
         border-radius: 20px;
@@ -211,7 +298,7 @@ st.markdown("""
         margin-top: 30px;
     }
     .footer-item {
-        color: #556070;
+        color: #6b7b8d !important;
         font-size: 12px;
     }
 </style>
@@ -224,8 +311,10 @@ def check_password():
     if st.session_state.authenticated:
         return True
 
+    st.markdown("")
+    st.markdown("")
     st.markdown("""
-    <div class="hero-banner" style="max-width:480px;margin:60px auto;">
+    <div class="hero-banner" style="max-width:480px;margin:40px auto;">
         <h1>🔐 Banking Intelligence</h1>
         <p>Teradata + AWS AgentCore Workshop</p>
     </div>
@@ -233,8 +322,10 @@ def check_password():
 
     col_l, col_m, col_r = st.columns([1, 2, 1])
     with col_m:
-        password = st.text_input("Password:", type="password", key="password_input")
-        if st.button("Login", use_container_width=True):
+        st.markdown("")
+        password = st.text_input("Enter workshop password:", type="password", key="password_input")
+        st.markdown("")
+        if st.button("Login", use_container_width=True, type="primary"):
             if password == "workshop2026":
                 st.session_state.authenticated = True
                 st.success("✅ Login successful!")
@@ -296,7 +387,7 @@ st.markdown("""
 <div class="value-banner">
     <h3>💡 Why This Matters</h3>
     <p>Traditional analytics takes days — weekly reports, manual SQL, Excel analysis.
-    With MCP-powered agents, you get <strong style="color:#4ec9b0;">real-time insights in seconds</strong>.
+    With MCP-powered agents, you get <strong style="color:#69f0ae;">real-time insights in seconds</strong>.
     Imagine detecting a complaint surge Monday morning and resolving it before customers churn,
     instead of discovering it in Friday's report.</p>
 </div>
@@ -340,9 +431,11 @@ with st.expander("📊 Speed Comparison: MCP vs Traditional Analytics"):
     </table>
     """, unsafe_allow_html=True)
 
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("**Expected Business Impact with MCP-Enabled Analytics:**")
     st.markdown("""
-    <table class="speed-table" style="margin-top:20px;">
-        <tr><th>Business Metric</th><th>Current State</th><th>MCP-Enabled</th><th>Impact</th></tr>
+    <table class="speed-table">
+        <tr><th>Metric</th><th>Current State</th><th>MCP-Enabled</th><th>Impact</th></tr>
         <tr>
             <td>Resolution Time</td>
             <td class="old">5-10 days</td>
@@ -544,7 +637,7 @@ if submit and query:
                 # Success header with timing
                 st.markdown(f"""
                 <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
-                    <span style="color:#4ec9b0; font-size:16px; font-weight:600;">✅ Analysis Complete</span>
+                    <span style="color:#69f0ae; font-size:16px; font-weight:600;">✅ Analysis Complete</span>
                     <span class="timing-badge">⚡ {elapsed:.1f}s</span>
                     <span class="timing-compare">⏱ Traditional: hours to days</span>
                 </div>
