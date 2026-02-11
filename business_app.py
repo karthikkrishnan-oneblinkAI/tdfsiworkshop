@@ -3,6 +3,9 @@ import subprocess
 import json
 import ast
 
+# MUST be first Streamlit command
+st.set_page_config(page_title="Banking Intelligence", page_icon="💼", layout="wide")
+
 # Password check
 def check_password():
     if 'authenticated' not in st.session_state:
@@ -27,9 +30,6 @@ def check_password():
     st.stop()
 
 check_password()
-
-# Main app
-st.set_page_config(page_title="Banking Intelligence", page_icon="💼", layout="wide")
 
 # Header
 col1, col2 = st.columns([5, 1])
@@ -97,16 +97,17 @@ with st.sidebar:
     - Identify cross-selling opportunities for wealthy customers
     """)
 
-# Query interface
-default_query = st.session_state.get('query', '')
+# Query interface — KEY FIX: set widget state directly before rendering
+if 'query' in st.session_state:
+    st.session_state.query_input = st.session_state.query
+    del st.session_state.query
+
 query = st.text_area(
     "Your Question:",
-    value=default_query,
+    key="query_input",
     placeholder="Example: Show me high-value customers at churn risk",
     height=120
 )
-if 'query' in st.session_state:
-    del st.session_state.query
 
 col1, col2 = st.columns([1, 4])
 with col1:
@@ -153,7 +154,7 @@ if submit and query:
                 capture_output=True,
                 text=True,
                 timeout=90,
-                cwd='/home/ubuntu/workshop/tdfsiworkshop'  # CORRECT!
+                cwd='/home/ubuntu/workshop/tdfsiworkshop'
             )
             
             if result.returncode == 0:
@@ -190,4 +191,3 @@ with col2:
     st.caption("☁️ AWS Bedrock AgentCore")
 with col3:
     st.caption("🤖 Claude 3.5 Sonnet")
-
