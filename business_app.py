@@ -12,142 +12,199 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ─── Custom CSS ───
+# ─── Custom CSS — works on BOTH light and dark Streamlit themes ───
 st.markdown("""
 <style>
     /* ═══════════════════════════════════════════════
-       BASE THEME — light-on-dark with good contrast
+       FORCE DARK BACKGROUND everywhere
        ═══════════════════════════════════════════════ */
-    .stApp {
-        background-color: #0f1419;
+    .stApp, .main, [data-testid="stAppViewContainer"],
+    [data-testid="stHeader"], [data-testid="stToolbar"],
+    .block-container, [data-testid="stMainBlockContainer"] {
+        background-color: #0f1419 !important;
+        color: #c9d1d9 !important;
+    }
+    header[data-testid="stHeader"] {
+        background-color: #0f1419 !important;
     }
 
-    /* ── All Labels (form fields) ── */
-    .stApp label {
-        color: #ffa94d !important;
+    /* ═══════════════════════════════════════════════
+       ALL LABELS — bright orange, always visible
+       ═══════════════════════════════════════════════ */
+    label, .stTextInput label, .stTextArea label,
+    .stTextInput label p, .stTextArea label p,
+    [data-testid="stWidgetLabel"] label,
+    [data-testid="stWidgetLabel"] p {
+        color: #ff8c00 !important;
         font-weight: 600 !important;
-        font-size: 14px !important;
-        letter-spacing: 0.3px;
+        font-size: 15px !important;
     }
 
-    /* ── Text Inputs & Text Areas ── */
-    .stTextInput input, .stTextArea textarea {
-        color: #ffffff !important;
+    /* ═══════════════════════════════════════════════
+       TEXT INPUTS & TEXT AREAS
+       ═══════════════════════════════════════════════ */
+    .stTextInput input, .stTextArea textarea,
+    .stTextInput > div > div > input,
+    .stTextArea > div > div > textarea {
+        color: #f0f0f0 !important;
         background-color: #1b2230 !important;
-        border: 1.5px solid #4a5568 !important;
+        border: 2px solid #3d4f65 !important;
         border-radius: 8px !important;
-        caret-color: #ffa94d !important;
-        font-size: 14px !important;
+        font-size: 15px !important;
     }
     .stTextInput input::placeholder, .stTextArea textarea::placeholder {
-        color: #718096 !important;
+        color: #6b7f96 !important;
     }
     .stTextInput input:focus, .stTextArea textarea:focus {
-        border-color: #ffa94d !important;
-        box-shadow: 0 0 0 2px rgba(255, 169, 77, 0.25) !important;
+        border-color: #ff8c00 !important;
+        box-shadow: 0 0 0 2px rgba(255, 140, 0, 0.3) !important;
+    }
+    /* Eye icon for password field */
+    .stTextInput button {
+        color: #8b949e !important;
     }
 
-    /* ── Body Text ── */
-    .stMarkdown p, .stMarkdown li, .stMarkdown span {
-        color: #cbd5e0;
+    /* ═══════════════════════════════════════════════
+       BODY TEXT & MARKDOWN
+       ═══════════════════════════════════════════════ */
+    .stMarkdown, .stMarkdown p, .stMarkdown li,
+    .stMarkdown span, .stMarkdown div {
+        color: #c9d1d9 !important;
     }
-    .stMarkdown strong {
-        color: #f7fafc;
+    .stMarkdown strong, .stMarkdown b {
+        color: #f0f6fc !important;
     }
     .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
-        color: #f0f4f8 !important;
+        color: #f0f6fc !important;
     }
     .stMarkdown code {
-        color: #68d391;
-        background: #1a2332;
-        padding: 2px 6px;
-        border-radius: 4px;
+        color: #7ee787 !important;
+        background: #161b22 !important;
+    }
+    .stMarkdown a {
+        color: #58a6ff !important;
     }
 
-    /* ── Expanders ── */
-    .streamlit-expanderHeader, .streamlit-expanderHeader p,
-    .streamlit-expanderHeader span {
+    /* ═══════════════════════════════════════════════
+       EXPANDERS
+       ═══════════════════════════════════════════════ */
+    [data-testid="stExpander"],
+    [data-testid="stExpander"] summary,
+    [data-testid="stExpander"] summary span,
+    .streamlit-expanderHeader {
         color: #e2e8f0 !important;
-        font-weight: 500 !important;
+        background-color: #161b22 !important;
+        border-color: #30363d !important;
     }
-    .streamlit-expanderContent p,
-    .streamlit-expanderContent li,
-    .streamlit-expanderContent span {
-        color: #cbd5e0 !important;
+    [data-testid="stExpander"] div[data-testid="stExpanderDetails"],
+    .streamlit-expanderContent {
+        background-color: #161b22 !important;
+        color: #c9d1d9 !important;
+    }
+    [data-testid="stExpander"] div[data-testid="stExpanderDetails"] p,
+    [data-testid="stExpander"] div[data-testid="stExpanderDetails"] li {
+        color: #c9d1d9 !important;
     }
 
-    /* ── Sidebar ── */
-    section[data-testid="stSidebar"] {
+    /* ═══════════════════════════════════════════════
+       SIDEBAR
+       ═══════════════════════════════════════════════ */
+    section[data-testid="stSidebar"],
+    section[data-testid="stSidebar"] > div {
         background-color: #0d1117 !important;
-        border-right: 1px solid #1e2733;
     }
     section[data-testid="stSidebar"] p,
     section[data-testid="stSidebar"] span,
-    section[data-testid="stSidebar"] li {
+    section[data-testid="stSidebar"] li,
+    section[data-testid="stSidebar"] label {
         color: #c9d1d9 !important;
     }
     section[data-testid="stSidebar"] strong {
         color: #f0f6fc !important;
     }
+    section[data-testid="stSidebar"] h1,
+    section[data-testid="stSidebar"] h2,
     section[data-testid="stSidebar"] h3 {
         color: #f0f6fc !important;
     }
-    section[data-testid="stSidebar"] .stCaption {
-        color: #8b949e !important;
+    section[data-testid="stSidebar"] hr {
+        border-color: #30363d !important;
     }
 
-    /* ══ SIDEBAR BUTTONS — make them pop ══ */
+    /* ══ SIDEBAR BUTTONS — bright orange, unmistakable ══ */
     section[data-testid="stSidebar"] .stButton > button {
         background: linear-gradient(135deg, #ff6600 0%, #ff8533 100%) !important;
         color: #ffffff !important;
         border: none !important;
         border-radius: 8px !important;
-        font-weight: 600 !important;
+        font-weight: 700 !important;
         font-size: 13px !important;
-        padding: 8px 16px !important;
+        padding: 10px 16px !important;
         width: 100% !important;
-        transition: all 0.2s ease !important;
-        box-shadow: 0 2px 8px rgba(255, 102, 0, 0.3) !important;
-        margin-bottom: 4px !important;
+        box-shadow: 0 2px 10px rgba(255, 102, 0, 0.35) !important;
+        margin-bottom: 6px !important;
+        letter-spacing: 0.3px !important;
     }
     section[data-testid="stSidebar"] .stButton > button:hover {
         background: linear-gradient(135deg, #ff8533 0%, #ffa94d 100%) !important;
-        box-shadow: 0 4px 14px rgba(255, 102, 0, 0.45) !important;
+        box-shadow: 0 4px 16px rgba(255, 102, 0, 0.5) !important;
         transform: translateY(-1px) !important;
     }
 
-    /* ── Main area primary button ── */
-    .stApp > section > div > div > div .stButton > button[kind="primary"],
+    /* ══ SIDEBAR EXPANDERS ══ */
+    section[data-testid="stSidebar"] [data-testid="stExpander"],
+    section[data-testid="stSidebar"] [data-testid="stExpander"] summary {
+        background-color: #0d1117 !important;
+        border-color: #21262d !important;
+    }
+    section[data-testid="stSidebar"] [data-testid="stExpander"] summary span {
+        color: #8b949e !important;
+        font-size: 13px !important;
+    }
+
+    /* ═══════════════════════════════════════════════
+       MAIN BUTTONS
+       ═══════════════════════════════════════════════ */
+    /* Primary (Get Insights) */
     button[data-testid="stBaseButton-primary"] {
         background: linear-gradient(135deg, #0052CC 0%, #2684FF 100%) !important;
         color: #ffffff !important;
         border: none !important;
         border-radius: 8px !important;
-        font-weight: 600 !important;
-        box-shadow: 0 2px 8px rgba(0, 82, 204, 0.35) !important;
+        font-weight: 700 !important;
+        font-size: 14px !important;
+        box-shadow: 0 2px 10px rgba(0, 82, 204, 0.35) !important;
     }
     button[data-testid="stBaseButton-primary"]:hover {
-        box-shadow: 0 4px 14px rgba(0, 82, 204, 0.5) !important;
+        box-shadow: 0 4px 16px rgba(0, 82, 204, 0.5) !important;
     }
-
-    /* ── Other buttons (logout, login) ── */
-    .stButton > button {
-        color: #e2e8f0 !important;
-        border-color: #4a5568 !important;
+    /* Secondary (Logout etc) */
+    button[data-testid="stBaseButton-secondary"] {
+        color: #c9d1d9 !important;
+        border-color: #30363d !important;
+        background-color: #21262d !important;
     }
-
-    /* ── Alerts ── */
-    .stAlert p {
-        color: inherit !important;
-    }
-
-    /* ── Spinner ── */
-    .stSpinner > div > span {
-        color: #e2e8f0 !important;
+    button[data-testid="stBaseButton-secondary"]:hover {
+        background-color: #30363d !important;
+        border-color: #484f58 !important;
     }
 
     /* ═══════════════════════════════════════════════
-       CUSTOM COMPONENTS
+       ALERTS
+       ═══════════════════════════════════════════════ */
+    [data-testid="stAlert"] {
+        color: inherit !important;
+    }
+
+    /* ═══════════════════════════════════════════════
+       SPINNER
+       ═══════════════════════════════════════════════ */
+    .stSpinner, .stSpinner > div, .stSpinner > div > span {
+        color: #c9d1d9 !important;
+    }
+
+    /* ═══════════════════════════════════════════════
+       CUSTOM HTML COMPONENTS
        ═══════════════════════════════════════════════ */
 
     /* Hero banner */
@@ -157,25 +214,11 @@ st.markdown("""
         padding: 30px 34px;
         margin-bottom: 24px;
     }
-    .hero-banner h1 {
-        color: #ffffff !important;
-        font-size: 28px;
-        margin-bottom: 6px;
-    }
-    .hero-banner p {
-        color: rgba(255,255,255,0.92) !important;
-        font-size: 15px;
-        margin: 0;
-    }
-    .logo-row {
-        display: flex;
-        gap: 10px;
-        margin-top: 16px;
-        flex-wrap: wrap;
-    }
+    .hero-banner h1 { color: #ffffff !important; font-size: 28px; margin-bottom: 6px; }
+    .hero-banner p { color: rgba(255,255,255,0.92) !important; font-size: 15px; margin: 0; }
+    .logo-row { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
     .logo-badge {
         background: rgba(255,255,255,0.2);
-        backdrop-filter: blur(4px);
         padding: 5px 14px;
         border-radius: 6px;
         font-size: 12px;
@@ -183,27 +226,16 @@ st.markdown("""
         color: #ffffff !important;
     }
 
-    /* Login page */
+    /* Login card */
     .login-card {
         background: #161b22;
         border: 1px solid #30363d;
         border-radius: 14px;
-        padding: 36px 32px;
-        max-width: 420px;
-        margin: 30px auto;
-    }
-    .login-card h2 {
-        color: #f0f6fc !important;
-        font-size: 22px;
-        text-align: center;
-        margin-bottom: 6px;
-    }
-    .login-card p {
-        color: #8b949e !important;
-        text-align: center;
-        font-size: 14px;
+        padding: 32px;
         margin-bottom: 20px;
     }
+    .login-card h2 { color: #f0f6fc !important; text-align: center; margin-bottom: 6px; }
+    .login-card p { color: #8b949e !important; text-align: center; font-size: 14px; }
 
     /* Metric cards */
     .metric-row {
@@ -212,9 +244,7 @@ st.markdown("""
         gap: 14px;
         margin-bottom: 24px;
     }
-    @media (max-width: 768px) {
-        .metric-row { grid-template-columns: repeat(2, 1fr); }
-    }
+    @media (max-width: 768px) { .metric-row { grid-template-columns: repeat(2, 1fr); } }
     .metric-card {
         background: #161b22;
         border: 1px solid #30363d;
@@ -222,23 +252,9 @@ st.markdown("""
         padding: 18px;
         text-align: center;
     }
-    .metric-card .mv {
-        font-size: 28px;
-        font-weight: 700;
-        color: #58a6ff;
-    }
-    .metric-card .ml {
-        font-size: 10px;
-        color: #8b949e;
-        text-transform: uppercase;
-        letter-spacing: 0.8px;
-        margin-top: 2px;
-    }
-    .metric-card .ms {
-        font-size: 11px;
-        color: #ffa657;
-        margin-top: 6px;
-    }
+    .metric-card .mv { font-size: 28px; font-weight: 700; color: #58a6ff; }
+    .metric-card .ml { font-size: 10px; color: #8b949e; text-transform: uppercase; letter-spacing: 0.8px; margin-top: 2px; }
+    .metric-card .ms { font-size: 11px; color: #ffa657; margin-top: 6px; }
 
     /* Value banner */
     .value-banner {
@@ -249,40 +265,13 @@ st.markdown("""
         padding: 22px 26px;
         margin-bottom: 22px;
     }
-    .value-banner h3 {
-        color: #58a6ff !important;
-        font-size: 16px;
-        margin-bottom: 10px;
-    }
-    .value-banner p {
-        color: #c9d1d9 !important;
-        font-size: 14px;
-        line-height: 1.65;
-        margin: 0;
-    }
+    .value-banner h3 { color: #58a6ff !important; font-size: 16px; margin-bottom: 10px; }
+    .value-banner p { color: #c9d1d9 !important; font-size: 14px; line-height: 1.65; margin: 0; }
 
     /* Speed table */
-    .speed-table {
-        width: 100%;
-        border-collapse: separate;
-        border-spacing: 0;
-        margin: 14px 0;
-        font-size: 13px;
-    }
-    .speed-table th {
-        text-align: left;
-        padding: 10px 14px;
-        color: #8b949e;
-        border-bottom: 2px solid #30363d;
-        font-size: 10px;
-        text-transform: uppercase;
-        letter-spacing: 0.8px;
-    }
-    .speed-table td {
-        padding: 11px 14px;
-        border-bottom: 1px solid #21262d;
-        color: #c9d1d9;
-    }
+    .speed-table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 14px 0; font-size: 13px; }
+    .speed-table th { text-align: left; padding: 10px 14px; color: #8b949e; border-bottom: 2px solid #30363d; font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; }
+    .speed-table td { padding: 11px 14px; border-bottom: 1px solid #21262d; color: #c9d1d9; }
     .speed-table .old { color: #f97583; font-weight: 500; }
     .speed-table .new { color: #56d364; font-weight: 600; }
     .speed-table .impact { color: #e3b341; font-size: 12px; }
@@ -295,67 +284,40 @@ st.markdown("""
         padding: 14px 16px;
         margin-bottom: 8px;
     }
-    .cat-card h4 {
-        color: #58a6ff !important;
-        font-size: 14px;
-        margin: 0 0 5px 0;
-    }
-    .cat-card .cat-time {
-        font-size: 11px;
-        color: #ffa657 !important;
-        margin-bottom: 5px;
-    }
-    .cat-card .cat-desc {
-        color: #8b949e !important;
-        font-size: 12px;
-        line-height: 1.5;
-        margin: 0;
-    }
+    .cat-card h4 { color: #58a6ff !important; font-size: 14px; margin: 0 0 5px 0; }
+    .cat-card .cat-time { font-size: 11px; color: #ffa657 !important; margin-bottom: 5px; }
+    .cat-card .cat-desc { color: #8b949e !important; font-size: 12px; line-height: 1.5; margin: 0; }
 
-    /* Timing badges (results) */
+    /* Timing badges */
     .timing-badge {
-        display: inline-block;
-        background: #0d3321;
-        border: 1px solid #238636;
-        color: #56d364 !important;
-        font-size: 12px;
-        font-weight: 600;
-        padding: 4px 14px;
-        border-radius: 20px;
-        margin-left: 8px;
+        display: inline-block; background: #0d3321; border: 1px solid #238636;
+        color: #56d364 !important; font-size: 12px; font-weight: 600;
+        padding: 4px 14px; border-radius: 20px; margin-left: 8px;
     }
     .timing-compare {
-        display: inline-block;
-        background: #341a04;
-        border: 1px solid #9e6a03;
-        color: #e3b341 !important;
-        font-size: 11px;
-        padding: 3px 12px;
-        border-radius: 20px;
-        margin-left: 6px;
+        display: inline-block; background: #341a04; border: 1px solid #9e6a03;
+        color: #e3b341 !important; font-size: 11px;
+        padding: 3px 12px; border-radius: 20px; margin-left: 6px;
     }
 
     /* Footer */
     .footer-row {
-        display: flex;
-        justify-content: center;
-        gap: 28px;
-        padding: 22px 0 10px 0;
-        border-top: 1px solid #21262d;
-        margin-top: 36px;
+        display: flex; justify-content: center; gap: 28px;
+        padding: 22px 0 10px 0; border-top: 1px solid #21262d; margin-top: 36px;
     }
     .footer-item { color: #484f58; font-size: 12px; }
 </style>
 """, unsafe_allow_html=True)
 
-# ─── Password Check ───
+# ═══════════════════════════════════════════════════
+# PASSWORD CHECK — with Enter key support
+# ═══════════════════════════════════════════════════
 def check_password():
     if 'authenticated' not in st.session_state:
         st.session_state.authenticated = False
     if st.session_state.authenticated:
         return True
 
-    # Centered login hero
     st.markdown("")
     st.markdown("""
     <div class="hero-banner" style="max-width:500px;margin:20px auto;">
@@ -366,16 +328,19 @@ def check_password():
 
     col_l, col_m, col_r = st.columns([1.2, 2, 1.2])
     with col_m:
-        # Card-style login box
         st.markdown("""
         <div class="login-card">
             <h2>🔐 Welcome</h2>
             <p>Enter the workshop password to continue</p>
         </div>
         """, unsafe_allow_html=True)
-        password = st.text_input("Workshop Password:", type="password", key="password_input")
-        st.markdown("")
-        if st.button("🔓 Login", use_container_width=True, type="primary"):
+
+        # st.form allows Enter key to submit
+        with st.form("login_form"):
+            password = st.text_input("Workshop Password:", type="password", key="password_input")
+            submitted = st.form_submit_button("🔓 Login", use_container_width=True, type="primary")
+
+        if submitted:
             if password == "workshop2026":
                 st.session_state.authenticated = True
                 st.success("✅ Login successful!")
@@ -386,9 +351,11 @@ def check_password():
 
 check_password()
 
-# ─── Logged-in App ───
+# ═══════════════════════════════════════════════════
+# LOGGED-IN APP
+# ═══════════════════════════════════════════════════
 
-# Header row
+# Header
 col_main, col_logout = st.columns([6, 1])
 with col_logout:
     if st.button("🚪 Logout"):
@@ -570,7 +537,7 @@ with st.sidebar:
         - Customers suitable for private banking upgrade
         """)
 
-    # ── Impact Summary ──
+    # ── Impact ──
     st.markdown("---")
     st.markdown("### 💰 Business Impact")
     st.markdown("""
