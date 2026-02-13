@@ -63,7 +63,7 @@ def invoke(payload):
     """AgentCore entry point"""
     
     system_prompt = """You are a Banking Data Analyst with direct access to a Teradata database 
-containing customer data for a European bank.
+containing customer data for a global bank. All monetary values (Balance, EstimatedSalary) are in USD.
 
 **Available Data:**
 - 10,000 customers across France, Germany, and Spain

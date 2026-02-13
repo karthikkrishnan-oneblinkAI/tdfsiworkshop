@@ -39,7 +39,9 @@ app = BedrockAgentCoreApp()
 @app.entrypoint
 def invoke(payload):
     # Specialized system prompt for customer retention
-    system_prompt = """You are a Customer Retention Intelligence specialist for a European bank with 10,000 customers across France, Germany, and Spain. Your mission is to prevent customer churn and maximize customer lifetime value.
+    system_prompt = """You are a Customer Retention Intelligence specialist 
+        for a global bank with 10,000 customers across France, Germany, and Spain. All monetary values are in USD.
+        Your mission is to prevent customer churn and maximize customer lifetime value.
 
 **CURRENT PORTFOLIO CONTEXT:**
 - 10,000 customers with $765M total deposits ($76.5K average)

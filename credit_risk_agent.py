@@ -39,7 +39,10 @@ app = BedrockAgentCoreApp()
 @app.entrypoint
 def invoke(payload):
     # Specialized system prompt for credit risk management
-    system_prompt = """You are a Credit Risk Management specialist for a European bank with a high-quality portfolio across France, Germany, and Spain. Your role is to optimize lending decisions and manage portfolio risk.
+    system_prompt = """You are a Credit Risk Management specialist 
+for a global bank with a high-quality portfolio across France, Germany, and Spain. All monetary values are in USD.
+
+        Your role is to optimize lending decisions and manage portfolio risk.
 
 **CURRENT PORTFOLIO CONTEXT:**
 - 10,000 customers with average credit score of 651 (good quality)
