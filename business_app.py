@@ -163,7 +163,15 @@ st.markdown("""
     [data-testid="stAlert"] p { color: inherit !important; }
 
     /* ── SPINNER ── */
-    .stSpinner, .stSpinner > div, .stSpinner > div > span { color: #c9d1d9 !important; }
+    .stSpinner, .stSpinner > div, .stSpinner > div > span { 
+        color: #ffa657 !important; 
+        font-size: 15px !important;
+    }
+    .stSpinner > div > i { color: #ff8c00 !important; }
+    /* Spinner container - add breathing room */
+    .stSpinner { 
+        padding: 20px 0 !important;
+    }
 
     /* ── CODE BLOCKS ── */
     [data-testid="stCode"], pre, code { background-color: #0d1117 !important; color: #c9d1d9 !important; }
@@ -215,6 +223,22 @@ st.markdown("""
 
     .footer-row { display: flex; justify-content: center; gap: 28px; padding: 22px 0 10px 0; border-top: 1px solid #21262d; margin-top: 36px; }
     .footer-item { color: #6e7681; font-size: 12px; }
+
+    /* ── QUERY SECTION SEPARATOR ── */
+    .query-separator {
+        border-top: 1px solid #30363d;
+        margin: 28px 0 24px 0;
+        padding-top: 4px;
+    }
+
+    /* ── RESULTS SECTION ── */
+    .results-card {
+        background: #161b22;
+        border: 1px solid #30363d;
+        border-radius: 12px;
+        padding: 24px;
+        margin-top: 16px;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -382,6 +406,8 @@ if 'query' in st.session_state:
     st.session_state.query_input = st.session_state.query
     del st.session_state.query
 
+st.markdown('<div class="query-separator"></div>', unsafe_allow_html=True)
+
 query = st.text_area(
     "Your Question:",
     key="query_input",
@@ -443,7 +469,14 @@ def extract_clean_response(raw_output):
 
 if submit and query:
     start_time = time.time()
-    with st.spinner("🤔 Querying Teradata via MCP + Claude — this may take 15-60 seconds..."):
+    with st.spinner(""):
+        st.markdown("""
+        <div style="display:flex;align-items:center;gap:12px;padding:16px 20px;background:#1b2230;border:1px solid #3d4f65;border-radius:10px;margin:8px 0;">
+            <div style="width:20px;height:20px;border:3px solid #30363d;border-top:3px solid #ff8c00;border-radius:50%;animation:spin 1s linear infinite;flex-shrink:0;"></div>
+            <span style="color:#ffa657;font-size:15px;font-weight:500;">Querying Teradata via MCP + Claude — this may take 15-60 seconds...</span>
+        </div>
+        <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
+        """, unsafe_allow_html=True)
         try:
             payload = json.dumps({"prompt": query})
             result = subprocess.run(
