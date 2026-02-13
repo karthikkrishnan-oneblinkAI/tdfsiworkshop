@@ -395,6 +395,9 @@ with col1:
 
 
 def extract_clean_response(raw_output):
+    import re
+    
+    # Strategy 1: Find 'text' value using ast.literal_eval on the Response dict
     try:
         if "Response:" in raw_output:
             response_part = raw_output.split("Response:", 1)[1].strip()
@@ -404,13 +407,38 @@ def extract_clean_response(raw_output):
                 if isinstance(content, list) and len(content) > 0:
                     if 'text' in content[0]:
                         return content[0]['text']
-        return raw_output
     except Exception:
-        import re
-        match = re.search(r"'text':\s*[\"'](.+?)[\"']\s*}\s*]\s*}", raw_output, re.DOTALL)
+        pass
+    
+    # Strategy 2: Extract text between 'text': ' and the closing dict pattern
+    try:
+        match = re.search(r"'text':\s*'(.*?)'\s*}\s*]\s*}", raw_output, re.DOTALL)
+        if match:
+            return match.group(1).replace('\\n', '\n').replace("\\'", "'")
+    except Exception:
+        pass
+    
+    # Strategy 3: Try with double quotes
+    try:
+        match = re.search(r"'text':\s*\"(.*?)\"\s*}\s*]\s*}", raw_output, re.DOTALL)
         if match:
             return match.group(1).replace('\\n', '\n')
-        return raw_output
+    except Exception:
+        pass
+    
+    # Strategy 4: Just grab everything after "Response:" and clean it
+    try:
+        if "Response:" in raw_output:
+            after = raw_output.split("Response:", 1)[1].strip()
+            # Try json.loads with fixed quotes
+            fixed = after.replace("'", '"')
+            parsed = json.loads(fixed)
+            if 'content' in parsed and parsed['content']:
+                return parsed['content'][0].get('text', raw_output)
+    except Exception:
+        pass
+    
+    return raw_output
 
 
 if submit and query:
