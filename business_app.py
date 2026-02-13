@@ -63,11 +63,11 @@ st.markdown("""
         caret-color: #ff8c00 !important;
     }
     input::placeholder, textarea::placeholder {
-        color: #5a6f85 !important;
+        color: #7a8a9e !important;
     }
     input:focus, textarea:focus {
         border-color: #ff8c00 !important;
-        box-shadow: 0 0 0 2px rgba(255,140,0,0.3) !important;
+        box-shadow: 0 0 0 3px rgba(255,140,0,0.2) !important;
     }
     /* Password eye icon */
     .stTextInput button svg { color: #8b949e !important; fill: #8b949e !important; }
@@ -80,14 +80,14 @@ st.markdown("""
     .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 { color: #f0f6fc !important; }
     .stMarkdown code { color: #7ee787 !important; background: #161b22 !important; padding: 2px 6px; border-radius: 4px; }
     .stMarkdown a { color: #58a6ff !important; }
-    .stCaption, small { color: #8b949e !important; }
+    .stCaption, small { color: #9da5ae !important; }
     .stMarkdown hr { border-color: #30363d !important; }
 
     /* ── EXPANDERS ── */
     [data-testid="stExpander"] { border-color: #30363d !important; background: #161b22 !important; border-radius: 8px !important; }
     [data-testid="stExpander"] summary { background: #161b22 !important; color: #e2e8f0 !important; }
     [data-testid="stExpander"] summary span { color: #e2e8f0 !important; }
-    [data-testid="stExpander"] summary svg { color: #8b949e !important; fill: #8b949e !important; }
+    [data-testid="stExpander"] summary svg { color: #9da5ae !important; fill: #9da5ae !important; }
     [data-testid="stExpander"] [data-testid="stExpanderDetails"] { background: #161b22 !important; }
     [data-testid="stExpander"] [data-testid="stExpanderDetails"] p,
     [data-testid="stExpander"] [data-testid="stExpanderDetails"] li,
@@ -106,11 +106,11 @@ st.markdown("""
     section[data-testid="stSidebar"] h2,
     section[data-testid="stSidebar"] h3 { color: #f0f6fc !important; }
     section[data-testid="stSidebar"] hr { border-color: #30363d !important; }
-    section[data-testid="stSidebar"] .stCaption { color: #8b949e !important; }
+    section[data-testid="stSidebar"] .stCaption { color: #9da5ae !important; }
     /* Sidebar expanders */
     section[data-testid="stSidebar"] [data-testid="stExpander"] { background: #0d1117 !important; border-color: #21262d !important; }
     section[data-testid="stSidebar"] [data-testid="stExpander"] summary { background: #0d1117 !important; }
-    section[data-testid="stSidebar"] [data-testid="stExpander"] summary span { color: #8b949e !important; font-size: 13px !important; }
+    section[data-testid="stSidebar"] [data-testid="stExpander"] summary span { color: #9da5ae !important; font-size: 13px !important; }
 
     /* ══ SIDEBAR BUTTONS — bright orange gradient ══ */
     section[data-testid="stSidebar"] .stButton > button {
@@ -185,13 +185,13 @@ st.markdown("""
         padding: 32px; margin-bottom: 20px;
     }
     .login-card h2 { color: #f0f6fc !important; text-align: center; margin-bottom: 6px; font-size: 22px; }
-    .login-card p { color: #8b949e !important; text-align: center; font-size: 14px; }
+    .login-card p { color: #9da5ae !important; text-align: center; font-size: 14px; }
 
     .metric-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
     @media (max-width: 768px) { .metric-row { grid-template-columns: repeat(2, 1fr); } }
-    .metric-card { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 18px; text-align: center; }
-    .metric-card .mv { font-size: 28px; font-weight: 700; color: #58a6ff; }
-    .metric-card .ml { font-size: 10px; color: #8b949e; text-transform: uppercase; letter-spacing: 0.8px; margin-top: 2px; }
+    .metric-card { background: #161b22; border: 1px solid #30363d; border-top: 1px solid #21262d; border-radius: 12px; padding: 18px; text-align: center; }
+    .metric-card .mv { font-size: 28px; font-weight: 700; color: #f0f6fc; }
+    .metric-card .ml { font-size: 10px; color: #9da5ae; text-transform: uppercase; letter-spacing: 0.8px; margin-top: 2px; }
     .metric-card .ms { font-size: 11px; color: #ffa657; margin-top: 6px; }
 
     .value-banner { background: #161b22; border: 1px solid #1f6feb; border-left: 4px solid #1f6feb; border-radius: 10px; padding: 22px 26px; margin-bottom: 22px; }
@@ -199,22 +199,22 @@ st.markdown("""
     .value-banner p { color: #c9d1d9 !important; font-size: 14px; line-height: 1.65; margin: 0; }
 
     .speed-table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 14px 0; font-size: 13px; }
-    .speed-table th { text-align: left; padding: 10px 14px; color: #8b949e; border-bottom: 2px solid #30363d; font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; }
+    .speed-table th { text-align: left; padding: 10px 14px; color: #9da5ae; border-bottom: 2px solid #30363d; font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; }
     .speed-table td { padding: 11px 14px; border-bottom: 1px solid #21262d; color: #c9d1d9; }
-    .speed-table .old { color: #f97583; font-weight: 500; }
+    .speed-table .old { color: #e5534b; font-weight: 500; }
     .speed-table .new { color: #56d364; font-weight: 600; }
     .speed-table .impact { color: #e3b341; font-size: 12px; }
 
     .cat-card { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 14px 16px; margin-bottom: 8px; }
     .cat-card h4 { color: #58a6ff !important; font-size: 14px; margin: 0 0 5px 0; }
     .cat-card .cat-time { font-size: 11px; color: #ffa657 !important; margin-bottom: 5px; }
-    .cat-card .cat-desc { color: #8b949e !important; font-size: 12px; line-height: 1.5; margin: 0; }
+    .cat-card .cat-desc { color: #9da5ae !important; font-size: 12px; line-height: 1.5; margin: 0; }
 
     .timing-badge { display: inline-block; background: #0d3321; border: 1px solid #238636; color: #56d364 !important; font-size: 12px; font-weight: 600; padding: 4px 14px; border-radius: 20px; margin-left: 8px; }
     .timing-compare { display: inline-block; background: #341a04; border: 1px solid #9e6a03; color: #e3b341 !important; font-size: 11px; padding: 3px 12px; border-radius: 20px; margin-left: 6px; }
 
     .footer-row { display: flex; justify-content: center; gap: 28px; padding: 22px 0 10px 0; border-top: 1px solid #21262d; margin-top: 36px; }
-    .footer-item { color: #484f58; font-size: 12px; }
+    .footer-item { color: #6e7681; font-size: 12px; }
 </style>
 """, unsafe_allow_html=True)
 
