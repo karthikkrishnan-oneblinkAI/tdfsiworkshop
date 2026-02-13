@@ -12,11 +12,12 @@ st.set_page_config(
 )
 
 # ═══════════════════════════════════════════════════════════
-# LIGHT THEME — clean, professional, projector-friendly
+# ALL STYLING IN ONE PLACE — forces dark theme via CSS
+# No config.toml needed
 # ═══════════════════════════════════════════════════════════
 st.markdown("""
 <style>
-    /* ── FORCE LIGHT BACKGROUND ── */
+    /* ── FORCE DARK BACKGROUND ON EVERYTHING ── */
     html, body, .stApp,
     [data-testid="stAppViewContainer"],
     [data-testid="stHeader"],
@@ -25,13 +26,14 @@ st.markdown("""
     [data-testid="stBottomBlockContainer"],
     .main, .block-container,
     header, footer {
-        background-color: #f8f9fb !important;
-        color: #1a1a2e !important;
+        background-color: #0f1419 !important;
+        color: #c9d1d9 !important;
     }
+    /* Kill any white flashes */
     .stApp > header { background: transparent !important; }
     [data-testid="stDecoration"] { display: none !important; }
 
-    /* ── FORM LABELS ── */
+    /* ── FORM LABELS — bright orange ── */
     label, p, span,
     .stTextInput label, .stTextArea label,
     .stTextInput label p, .stTextArea label p,
@@ -39,11 +41,11 @@ st.markdown("""
     [data-testid="stWidgetLabel"] p,
     [data-testid="stWidgetLabel"] span,
     .stFormSubmitButton label {
-        color: #3a3a4a !important;
+        color: #c9d1d9 !important;
     }
     .stTextInput > label, .stTextArea > label,
     .stTextInput > label p, .stTextArea > label p {
-        color: #d35400 !important;
+        color: #ff8c00 !important;
         font-weight: 700 !important;
         font-size: 15px !important;
     }
@@ -53,66 +55,66 @@ st.markdown("""
     .stTextInput input, .stTextArea textarea,
     .stTextInput > div > div > input,
     .stTextArea > div > div > textarea {
-        color: #1a1a2e !important;
-        background-color: #ffffff !important;
-        border: 1.5px solid #d0d5dd !important;
+        color: #f0f0f0 !important;
+        background-color: #1b2230 !important;
+        border: 2px solid #3d4f65 !important;
         border-radius: 8px !important;
         font-size: 15px !important;
-        caret-color: #e67e22 !important;
+        caret-color: #ff8c00 !important;
     }
     input::placeholder, textarea::placeholder {
-        color: #9ca3af !important;
+        color: #7a8a9e !important;
     }
     input:focus, textarea:focus {
-        border-color: #e67e22 !important;
-        box-shadow: 0 0 0 3px rgba(230,126,34,0.15) !important;
+        border-color: #ff8c00 !important;
+        box-shadow: 0 0 0 3px rgba(255,140,0,0.2) !important;
     }
-    .stTextInput button svg { color: #9ca3af !important; fill: #9ca3af !important; }
+    /* Password eye icon */
+    .stTextInput button svg { color: #8b949e !important; fill: #8b949e !important; }
 
     /* ── MARKDOWN TEXT ── */
     .stMarkdown, .stMarkdown p, .stMarkdown li,
     .stMarkdown span, .stMarkdown div,
-    .stMarkdown td, .stMarkdown th { color: #3a3a4a !important; }
-    .stMarkdown strong, .stMarkdown b { color: #1a1a2e !important; }
-    .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 { color: #1a1a2e !important; }
-    .stMarkdown code { color: #c0392b !important; background: #f0f2f5 !important; padding: 2px 6px; border-radius: 4px; }
-    .stMarkdown a { color: #2563eb !important; }
-    .stCaption, small { color: #6b7280 !important; }
-    .stMarkdown hr { border-color: #e5e7eb !important; }
+    .stMarkdown td, .stMarkdown th { color: #c9d1d9 !important; }
+    .stMarkdown strong, .stMarkdown b { color: #f0f6fc !important; }
+    .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 { color: #f0f6fc !important; }
+    .stMarkdown code { color: #7ee787 !important; background: #161b22 !important; padding: 2px 6px; border-radius: 4px; }
+    .stMarkdown a { color: #58a6ff !important; }
+    .stCaption, small { color: #9da5ae !important; }
+    .stMarkdown hr { border-color: #30363d !important; }
 
     /* ── EXPANDERS ── */
-    [data-testid="stExpander"] { border-color: #e5e7eb !important; background: #ffffff !important; border-radius: 8px !important; }
-    [data-testid="stExpander"] summary { background: #ffffff !important; color: #1a1a2e !important; }
-    [data-testid="stExpander"] summary span { color: #1a1a2e !important; }
-    [data-testid="stExpander"] summary svg { color: #9ca3af !important; fill: #9ca3af !important; }
-    [data-testid="stExpander"] [data-testid="stExpanderDetails"] { background: #ffffff !important; }
+    [data-testid="stExpander"] { border-color: #30363d !important; background: #161b22 !important; border-radius: 8px !important; }
+    [data-testid="stExpander"] summary { background: #161b22 !important; color: #e2e8f0 !important; }
+    [data-testid="stExpander"] summary span { color: #e2e8f0 !important; }
+    [data-testid="stExpander"] summary svg { color: #9da5ae !important; fill: #9da5ae !important; }
+    [data-testid="stExpander"] [data-testid="stExpanderDetails"] { background: #161b22 !important; }
     [data-testid="stExpander"] [data-testid="stExpanderDetails"] p,
     [data-testid="stExpander"] [data-testid="stExpanderDetails"] li,
-    [data-testid="stExpander"] [data-testid="stExpanderDetails"] span { color: #3a3a4a !important; }
+    [data-testid="stExpander"] [data-testid="stExpanderDetails"] span { color: #c9d1d9 !important; }
 
     /* ── SIDEBAR ── */
     section[data-testid="stSidebar"],
     section[data-testid="stSidebar"] > div:first-child {
-        background-color: #ffffff !important;
-        border-right: 1px solid #e5e7eb !important;
+        background-color: #0d1117 !important;
     }
     section[data-testid="stSidebar"] p,
     section[data-testid="stSidebar"] span,
-    section[data-testid="stSidebar"] li { color: #3a3a4a !important; }
-    section[data-testid="stSidebar"] strong { color: #1a1a2e !important; }
+    section[data-testid="stSidebar"] li { color: #c9d1d9 !important; }
+    section[data-testid="stSidebar"] strong { color: #f0f6fc !important; }
     section[data-testid="stSidebar"] h1,
     section[data-testid="stSidebar"] h2,
-    section[data-testid="stSidebar"] h3 { color: #1a1a2e !important; }
-    section[data-testid="stSidebar"] hr { border-color: #e5e7eb !important; }
-    section[data-testid="stSidebar"] .stCaption { color: #6b7280 !important; }
+    section[data-testid="stSidebar"] h3 { color: #f0f6fc !important; }
+    section[data-testid="stSidebar"] hr { border-color: #30363d !important; }
+    section[data-testid="stSidebar"] .stCaption { color: #9da5ae !important; }
     /* Sidebar expanders */
-    section[data-testid="stSidebar"] [data-testid="stExpander"] { background: #f8f9fb !important; border-color: #e5e7eb !important; }
-    section[data-testid="stSidebar"] [data-testid="stExpander"] summary { background: #f8f9fb !important; }
-    section[data-testid="stSidebar"] [data-testid="stExpander"] summary span { color: #6b7280 !important; font-size: 13px !important; }
+    section[data-testid="stSidebar"] [data-testid="stExpander"] { background: #0d1117 !important; border-color: #21262d !important; }
+    section[data-testid="stSidebar"] [data-testid="stExpander"] summary { background: #0d1117 !important; }
+    section[data-testid="stSidebar"] [data-testid="stExpander"] summary span { color: #9da5ae !important; font-size: 13px !important; }
 
-    /* ══ SIDEBAR BUTTONS — Teradata orange ══ */
+    /* ══ SIDEBAR BUTTONS — bright orange gradient ══ */
     section[data-testid="stSidebar"] .stButton > button {
-        background: linear-gradient(135deg, #e67e22 0%, #f39c12 100%) !important;
+        background: linear-gradient(135deg, #ff6600 0%, #ff8533 100%) !important;
         color: #ffffff !important;
         border: none !important;
         border-radius: 8px !important;
@@ -120,14 +122,14 @@ st.markdown("""
         font-size: 13px !important;
         padding: 10px 16px !important;
         width: 100% !important;
-        box-shadow: 0 2px 8px rgba(230,126,34,0.3) !important;
+        box-shadow: 0 2px 10px rgba(255,102,0,0.35) !important;
         margin-bottom: 6px !important;
         letter-spacing: 0.3px !important;
         cursor: pointer !important;
     }
     section[data-testid="stSidebar"] .stButton > button:hover {
-        background: linear-gradient(135deg, #f39c12 0%, #f5b041 100%) !important;
-        box-shadow: 0 4px 14px rgba(230,126,34,0.4) !important;
+        background: linear-gradient(135deg, #ff8533 0%, #ffa94d 100%) !important;
+        box-shadow: 0 4px 16px rgba(255,102,0,0.5) !important;
         transform: translateY(-1px) !important;
     }
 
@@ -140,113 +142,102 @@ st.markdown("""
         border-radius: 8px !important;
         font-weight: 700 !important;
         font-size: 14px !important;
-        box-shadow: 0 2px 8px rgba(0,82,204,0.25) !important;
+        box-shadow: 0 2px 10px rgba(0,82,204,0.35) !important;
         cursor: pointer !important;
     }
     button[data-testid="stBaseButton-primary"]:hover,
     .stFormSubmitButton button:hover {
-        box-shadow: 0 4px 14px rgba(0,82,204,0.4) !important;
+        box-shadow: 0 4px 16px rgba(0,82,204,0.5) !important;
     }
     /* Secondary (Logout) */
     button[data-testid="stBaseButton-secondary"] {
-        color: #3a3a4a !important;
-        border-color: #d0d5dd !important;
-        background-color: #ffffff !important;
+        color: #c9d1d9 !important;
+        border-color: #30363d !important;
+        background-color: #21262d !important;
     }
     button[data-testid="stBaseButton-secondary"]:hover {
-        background-color: #f0f2f5 !important;
+        background-color: #30363d !important;
     }
 
     /* ── ALERTS ── */
     [data-testid="stAlert"] p { color: inherit !important; }
 
     /* ── SPINNER ── */
-    .stSpinner, .stSpinner > div, .stSpinner > div > span {
-        color: #e67e22 !important;
+    .stSpinner, .stSpinner > div, .stSpinner > div > span { 
+        color: #ffa657 !important; 
         font-size: 15px !important;
     }
-    .stSpinner > div > i { color: #e67e22 !important; }
-    .stSpinner { padding: 20px 0 !important; }
+    .stSpinner > div > i { color: #ff8c00 !important; }
+    /* Spinner container - add breathing room */
+    .stSpinner { 
+        padding: 20px 0 !important;
+    }
 
     /* ── CODE BLOCKS ── */
-    [data-testid="stCode"], pre, code { background-color: #f0f2f5 !important; color: #1a1a2e !important; }
+    [data-testid="stCode"], pre, code { background-color: #0d1117 !important; color: #c9d1d9 !important; }
 
     /* ══════════════════════════════════════════════════
        CUSTOM HTML COMPONENTS
        ══════════════════════════════════════════════════ */
     .hero-banner {
-        background: linear-gradient(135deg, #e67e22 0%, #2563eb 100%);
+        background: linear-gradient(135deg, #FF6600 0%, #0052CC 100%);
         border-radius: 14px; padding: 30px 34px; margin-bottom: 24px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
     }
     .hero-banner h1 { color: #fff !important; font-size: 28px; margin-bottom: 6px; }
     .hero-banner p { color: rgba(255,255,255,0.92) !important; font-size: 15px; margin: 0; }
     .logo-row { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
-    .logo-badge { background: rgba(255,255,255,0.22); padding: 5px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; color: #fff !important; backdrop-filter: blur(4px); }
+    .logo-badge { background: rgba(255,255,255,0.2); padding: 5px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; color: #fff !important; }
 
     .login-card {
-        background: #ffffff; border: 1px solid #e5e7eb; border-radius: 14px;
+        background: #161b22; border: 1px solid #30363d; border-radius: 14px;
         padding: 32px; margin-bottom: 20px;
-        box-shadow: 0 2px 12px rgba(0,0,0,0.06);
     }
-    .login-card h2 { color: #1a1a2e !important; text-align: center; margin-bottom: 6px; font-size: 22px; }
-    .login-card p { color: #6b7280 !important; text-align: center; font-size: 14px; }
+    .login-card h2 { color: #f0f6fc !important; text-align: center; margin-bottom: 6px; font-size: 22px; }
+    .login-card p { color: #9da5ae !important; text-align: center; font-size: 14px; }
 
     .metric-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
     @media (max-width: 768px) { .metric-row { grid-template-columns: repeat(2, 1fr); } }
-    .metric-card {
-        background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px;
-        padding: 20px; text-align: center;
-        box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-    }
-    .metric-card .mv { font-size: 28px; font-weight: 700; color: #1a1a2e; }
-    .metric-card .ml { font-size: 10px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.8px; margin-top: 2px; }
-    .metric-card .ms { font-size: 11px; color: #d35400; margin-top: 6px; font-weight: 500; }
+    .metric-card { background: #161b22; border: 1px solid #30363d; border-top: 1px solid #21262d; border-radius: 12px; padding: 18px; text-align: center; }
+    .metric-card .mv { font-size: 28px; font-weight: 700; color: #f0f6fc; }
+    .metric-card .ml { font-size: 10px; color: #9da5ae; text-transform: uppercase; letter-spacing: 0.8px; margin-top: 2px; }
+    .metric-card .ms { font-size: 11px; color: #ffa657; margin-top: 6px; }
 
-    .value-banner {
-        background: #eff6ff; border: 1px solid #bfdbfe; border-left: 4px solid #2563eb;
-        border-radius: 10px; padding: 22px 26px; margin-bottom: 22px;
-    }
-    .value-banner h3 { color: #1e40af !important; font-size: 16px; margin-bottom: 10px; }
-    .value-banner p { color: #374151 !important; font-size: 14px; line-height: 1.65; margin: 0; }
+    .value-banner { background: #161b22; border: 1px solid #1f6feb; border-left: 4px solid #1f6feb; border-radius: 10px; padding: 22px 26px; margin-bottom: 22px; }
+    .value-banner h3 { color: #58a6ff !important; font-size: 16px; margin-bottom: 10px; }
+    .value-banner p { color: #c9d1d9 !important; font-size: 14px; line-height: 1.65; margin: 0; }
 
     .speed-table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 14px 0; font-size: 13px; }
-    .speed-table th { text-align: left; padding: 10px 14px; color: #6b7280; border-bottom: 2px solid #e5e7eb; font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; }
-    .speed-table td { padding: 11px 14px; border-bottom: 1px solid #f0f2f5; color: #374151; }
-    .speed-table .old { color: #dc2626; font-weight: 500; }
-    .speed-table .new { color: #16a34a; font-weight: 600; }
-    .speed-table .impact { color: #b45309; font-size: 12px; }
+    .speed-table th { text-align: left; padding: 10px 14px; color: #9da5ae; border-bottom: 2px solid #30363d; font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; }
+    .speed-table td { padding: 11px 14px; border-bottom: 1px solid #21262d; color: #c9d1d9; }
+    .speed-table .old { color: #e5534b; font-weight: 500; }
+    .speed-table .new { color: #56d364; font-weight: 600; }
+    .speed-table .impact { color: #e3b341; font-size: 12px; }
 
-    .cat-card {
-        background: #ffffff; border: 1px solid #e5e7eb; border-radius: 10px;
-        padding: 14px 16px; margin-bottom: 8px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-    }
-    .cat-card h4 { color: #1e40af !important; font-size: 14px; margin: 0 0 5px 0; }
-    .cat-card .cat-time { font-size: 11px; color: #d35400 !important; margin-bottom: 5px; font-weight: 500; }
-    .cat-card .cat-desc { color: #6b7280 !important; font-size: 12px; line-height: 1.5; margin: 0; }
+    .cat-card { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 14px 16px; margin-bottom: 8px; }
+    .cat-card h4 { color: #58a6ff !important; font-size: 14px; margin: 0 0 5px 0; }
+    .cat-card .cat-time { font-size: 11px; color: #ffa657 !important; margin-bottom: 5px; }
+    .cat-card .cat-desc { color: #9da5ae !important; font-size: 12px; line-height: 1.5; margin: 0; }
 
-    .timing-badge { display: inline-block; background: #dcfce7; border: 1px solid #86efac; color: #15803d !important; font-size: 12px; font-weight: 600; padding: 4px 14px; border-radius: 20px; margin-left: 8px; }
-    .timing-compare { display: inline-block; background: #fef3c7; border: 1px solid #fcd34d; color: #b45309 !important; font-size: 11px; padding: 3px 12px; border-radius: 20px; margin-left: 6px; }
+    .timing-badge { display: inline-block; background: #0d3321; border: 1px solid #238636; color: #56d364 !important; font-size: 12px; font-weight: 600; padding: 4px 14px; border-radius: 20px; margin-left: 8px; }
+    .timing-compare { display: inline-block; background: #341a04; border: 1px solid #9e6a03; color: #e3b341 !important; font-size: 11px; padding: 3px 12px; border-radius: 20px; margin-left: 6px; }
 
-    .footer-row { display: flex; justify-content: center; gap: 28px; padding: 22px 0 10px 0; border-top: 1px solid #e5e7eb; margin-top: 36px; }
-    .footer-item { color: #9ca3af; font-size: 12px; }
+    .footer-row { display: flex; justify-content: center; gap: 28px; padding: 22px 0 10px 0; border-top: 1px solid #21262d; margin-top: 36px; }
+    .footer-item { color: #6e7681; font-size: 12px; }
 
     /* ── QUERY SECTION SEPARATOR ── */
     .query-separator {
-        border-top: 1px solid #e5e7eb;
+        border-top: 1px solid #30363d;
         margin: 28px 0 24px 0;
         padding-top: 4px;
     }
 
     /* ── RESULTS SECTION ── */
     .results-card {
-        background: #ffffff;
-        border: 1px solid #e5e7eb;
+        background: #161b22;
+        border: 1px solid #30363d;
         border-radius: 12px;
         padding: 24px;
         margin-top: 16px;
-        box-shadow: 0 1px 4px rgba(0,0,0,0.04);
     }
 </style>
 """, unsafe_allow_html=True)
@@ -330,7 +321,7 @@ st.markdown("""
 <div class="value-banner">
     <h3>💡 Why This Matters</h3>
     <p>Traditional analytics takes days — weekly reports, manual SQL, Excel analysis.
-    With MCP-powered agents, you get <strong style="color:#16a34a;">real-time insights in seconds</strong>.
+    With MCP-powered agents, you get <strong style="color:#56d364;">real-time insights in seconds</strong>.
     Imagine detecting a complaint surge Monday morning and resolving it before customers churn,
     instead of discovering it in Friday's report.</p>
 </div>
@@ -431,7 +422,7 @@ with col1:
 
 def extract_clean_response(raw_output):
     import re
-
+    
     # Strategy 1: Find 'text' value using ast.literal_eval on the Response dict
     try:
         if "Response:" in raw_output:
@@ -444,7 +435,7 @@ def extract_clean_response(raw_output):
                         return content[0]['text']
     except Exception:
         pass
-
+    
     # Strategy 2: Extract text between 'text': ' and the closing dict pattern
     try:
         match = re.search(r"'text':\s*'(.*?)'\s*}\s*]\s*}", raw_output, re.DOTALL)
@@ -452,7 +443,7 @@ def extract_clean_response(raw_output):
             return match.group(1).replace('\\n', '\n').replace("\\'", "'")
     except Exception:
         pass
-
+    
     # Strategy 3: Try with double quotes
     try:
         match = re.search(r"'text':\s*\"(.*?)\"\s*}\s*]\s*}", raw_output, re.DOTALL)
@@ -460,18 +451,19 @@ def extract_clean_response(raw_output):
             return match.group(1).replace('\\n', '\n')
     except Exception:
         pass
-
+    
     # Strategy 4: Just grab everything after "Response:" and clean it
     try:
         if "Response:" in raw_output:
             after = raw_output.split("Response:", 1)[1].strip()
+            # Try json.loads with fixed quotes
             fixed = after.replace("'", '"')
             parsed = json.loads(fixed)
             if 'content' in parsed and parsed['content']:
                 return parsed['content'][0].get('text', raw_output)
     except Exception:
         pass
-
+    
     return raw_output
 
 
@@ -479,9 +471,9 @@ if submit and query:
     start_time = time.time()
     with st.spinner(""):
         st.markdown("""
-        <div style="display:flex;align-items:center;gap:12px;padding:16px 20px;background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;margin:8px 0;">
-            <div style="width:20px;height:20px;border:3px solid #fed7aa;border-top:3px solid #e67e22;border-radius:50%;animation:spin 1s linear infinite;flex-shrink:0;"></div>
-            <span style="color:#c2410c;font-size:15px;font-weight:500;">Querying Teradata via MCP + Claude — this may take 15-60 seconds...</span>
+        <div style="display:flex;align-items:center;gap:12px;padding:16px 20px;background:#1b2230;border:1px solid #3d4f65;border-radius:10px;margin:8px 0;">
+            <div style="width:20px;height:20px;border:3px solid #30363d;border-top:3px solid #ff8c00;border-radius:50%;animation:spin 1s linear infinite;flex-shrink:0;"></div>
+            <span style="color:#ffa657;font-size:15px;font-weight:500;">Querying Teradata via MCP + Claude — this may take 15-60 seconds...</span>
         </div>
         <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
         """, unsafe_allow_html=True)
@@ -497,7 +489,7 @@ if submit and query:
             if result.returncode == 0:
                 st.markdown(f"""
                 <div style="display:flex;align-items:center;gap:8px;margin:12px 0 6px 0;">
-                    <span style="color:#15803d;font-size:16px;font-weight:600;">✅ Analysis Complete</span>
+                    <span style="color:#56d364;font-size:16px;font-weight:600;">✅ Analysis Complete</span>
                     <span class="timing-badge">⚡ {elapsed:.1f}s</span>
                     <span class="timing-compare">⏱ Traditional: hours to days</span>
                 </div>
