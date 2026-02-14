@@ -477,59 +477,62 @@ def extract_clean_response(raw_output):
 
 if submit and query:
     start_time = time.time()
-    with st.spinner(""):
-        st.markdown("""
-        <div style="display:flex;align-items:center;gap:12px;padding:16px 20px;background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;margin:8px 0;">
-            <div style="width:20px;height:20px;border:3px solid #fed7aa;border-top:3px solid #e67e22;border-radius:50%;animation:spin 1s linear infinite;flex-shrink:0;"></div>
-            <span style="color:#c2410c;font-size:15px;font-weight:500;">Querying Teradata via MCP + Claude — this may take 15-60 seconds...</span>
-        </div>
-        <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
-        """, unsafe_allow_html=True)
-        try:
-            payload = json.dumps({"prompt": query})
-            result = subprocess.run(
-                ['/home/ubuntu/.local/bin/agentcore', 'invoke', payload],
-                capture_output=True, text=True, timeout=90,
-                cwd='/home/ubuntu/workshop/tdfsiworkshop'
-            )
-            elapsed = time.time() - start_time
+    spinner_placeholder = st.empty()
+    spinner_placeholder.markdown("""
+    <div style="display:flex;align-items:center;gap:12px;padding:16px 20px;background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;margin:8px 0;">
+        <div style="width:20px;height:20px;border:3px solid #fed7aa;border-top:3px solid #e67e22;border-radius:50%;animation:spin 1s linear infinite;flex-shrink:0;"></div>
+        <span style="color:#c2410c;font-size:15px;font-weight:500;">Querying Teradata via MCP + Claude — this may take 15-60 seconds...</span>
+    </div>
+    <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
+    """, unsafe_allow_html=True)
+    try:
+        payload = json.dumps({"prompt": query})
+        result = subprocess.run(
+            ['/home/ubuntu/.local/bin/agentcore', 'invoke', payload],
+            capture_output=True, text=True, timeout=90,
+            cwd='/home/ubuntu/workshop/tdfsiworkshop'
+        )
+        elapsed = time.time() - start_time
+        spinner_placeholder.empty()
 
-            if result.returncode == 0:
+        if result.returncode == 0:
+            st.markdown(f"""
+            <div style="display:flex;align-items:center;gap:8px;margin:12px 0 6px 0;">
+                <span style="color:#15803d;font-size:16px;font-weight:600;">✅ Analysis Complete</span>
+                <span class="timing-badge">⚡ {elapsed:.1f}s</span>
+                <span class="timing-compare">⏱ Traditional: hours to days</span>
+            </div>
+            """, unsafe_allow_html=True)
+
+            clean_text = extract_clean_response(result.stdout)
+            st.markdown("### 💡 Insights")
+            st.markdown(clean_text)
+
+            with st.expander("📈 Why This Matters — Business Context"):
                 st.markdown(f"""
-                <div style="display:flex;align-items:center;gap:8px;margin:12px 0 6px 0;">
-                    <span style="color:#15803d;font-size:16px;font-weight:600;">✅ Analysis Complete</span>
-                    <span class="timing-badge">⚡ {elapsed:.1f}s</span>
-                    <span class="timing-compare">⏱ Traditional: hours to days</span>
-                </div>
-                """, unsafe_allow_html=True)
+                **This query completed in {elapsed:.1f} seconds.** The same analysis traditionally requires:
 
-                clean_text = extract_clean_response(result.stdout)
-                st.markdown("### 💡 Insights")
-                st.markdown(clean_text)
+                1. **Request submission** to BI team or data engineering
+                2. **SQL authoring & validation** against the data warehouse
+                3. **Report building** in Excel or a BI tool
+                4. **Review & delivery** back to the stakeholder
 
-                with st.expander("📈 Why This Matters — Business Context"):
-                    st.markdown(f"""
-                    **This query completed in {elapsed:.1f} seconds.** The same analysis traditionally requires:
+                **Traditional total: hours to days.** With MCP agents, any business user
+                gets answers in plain English — no SQL, no ticket queue, no waiting.
+                """)
 
-                    1. **Request submission** to BI team or data engineering
-                    2. **SQL authoring & validation** against the data warehouse
-                    3. **Report building** in Excel or a BI tool
-                    4. **Review & delivery** back to the stakeholder
+            with st.expander("🔍 Raw Response (Debug)"):
+                st.code(result.stdout, language="text")
+        else:
+            st.error("❌ Error running query")
+            st.code(result.stderr, language="text")
 
-                    **Traditional total: hours to days.** With MCP agents, any business user
-                    gets answers in plain English — no SQL, no ticket queue, no waiting.
-                    """)
-
-                with st.expander("🔍 Raw Response (Debug)"):
-                    st.code(result.stdout, language="text")
-            else:
-                st.error("❌ Error running query")
-                st.code(result.stderr, language="text")
-
-        except subprocess.TimeoutExpired:
-            st.error("⏱️ Query timed out (>90s). Try a simpler question or run `agentcore status`.")
-        except Exception as e:
-            st.error(f"❌ Error: {str(e)}")
+    except subprocess.TimeoutExpired:
+        spinner_placeholder.empty()
+        st.error("⏱️ Query timed out (>90s). Try a simpler question or run `agentcore status`.")
+    except Exception as e:
+        spinner_placeholder.empty()
+        st.error(f"❌ Error: {str(e)}")
 
 elif submit:
     st.warning("⚠️ Please enter a question — or click an orange button in the sidebar →")

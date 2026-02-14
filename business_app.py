@@ -16,6 +16,15 @@ st.set_page_config(
 # ═══════════════════════════════════════════════════════════
 st.markdown("""
 <style>
+    /* ── GLOBAL BASE FONT SIZE ── */
+    html { font-size: 18px !important; }
+    body, .stApp, .main, .block-container,
+    p, span, li, td, th, label, div,
+    .stMarkdown, .stMarkdown p, .stMarkdown li, .stMarkdown span,
+    .stMarkdown div, .stMarkdown td, .stMarkdown th {
+        font-size: 16px !important;
+    }
+
     /* ── FORCE LIGHT BACKGROUND ── */
     html, body, .stApp,
     [data-testid="stAppViewContainer"],
@@ -45,7 +54,7 @@ st.markdown("""
     .stTextInput > label p, .stTextArea > label p {
         color: #d35400 !important;
         font-weight: 700 !important;
-        font-size: 15px !important;
+        font-size: 17px !important;
     }
 
     /* ── TEXT INPUTS & TEXTAREAS ── */
@@ -57,7 +66,7 @@ st.markdown("""
         background-color: #ffffff !important;
         border: 1.5px solid #d0d5dd !important;
         border-radius: 8px !important;
-        font-size: 15px !important;
+        font-size: 17px !important;
         caret-color: #e67e22 !important;
     }
     input::placeholder, textarea::placeholder {
@@ -88,7 +97,7 @@ st.markdown("""
     [data-testid="stExpander"] [data-testid="stExpanderDetails"] { background: #ffffff !important; }
     [data-testid="stExpander"] [data-testid="stExpanderDetails"] p,
     [data-testid="stExpander"] [data-testid="stExpanderDetails"] li,
-    [data-testid="stExpander"] [data-testid="stExpanderDetails"] span { color: #3a3a4a !important; }
+    [data-testid="stExpander"] [data-testid="stExpanderDetails"] span { color: #3a3a4a !important; font-size: 16px !important; }
 
     /* ── SIDEBAR ── */
     section[data-testid="stSidebar"],
@@ -98,17 +107,24 @@ st.markdown("""
     }
     section[data-testid="stSidebar"] p,
     section[data-testid="stSidebar"] span,
-    section[data-testid="stSidebar"] li { color: #3a3a4a !important; }
-    section[data-testid="stSidebar"] strong { color: #1a1a2e !important; }
-    section[data-testid="stSidebar"] h1,
-    section[data-testid="stSidebar"] h2,
-    section[data-testid="stSidebar"] h3 { color: #1a1a2e !important; }
+    section[data-testid="stSidebar"] li,
+    section[data-testid="stSidebar"] div,
+    section[data-testid="stSidebar"] label,
+    section[data-testid="stSidebar"] td,
+    section[data-testid="stSidebar"] th { color: #3a3a4a !important; font-size: 15px !important; }
+    section[data-testid="stSidebar"] strong { color: #1a1a2e !important; font-size: 15px !important; }
+    section[data-testid="stSidebar"] h1 { color: #1a1a2e !important; font-size: 24px !important; }
+    section[data-testid="stSidebar"] h2 { color: #1a1a2e !important; font-size: 22px !important; }
+    section[data-testid="stSidebar"] h3 { color: #1a1a2e !important; font-size: 20px !important; }
     section[data-testid="stSidebar"] hr { border-color: #e5e7eb !important; }
-    section[data-testid="stSidebar"] .stCaption { color: #6b7280 !important; }
+    section[data-testid="stSidebar"] .stCaption { color: #6b7280 !important; font-size: 14px !important; }
     /* Sidebar expanders */
     section[data-testid="stSidebar"] [data-testid="stExpander"] { background: #f8f9fb !important; border-color: #e5e7eb !important; }
     section[data-testid="stSidebar"] [data-testid="stExpander"] summary { background: #f8f9fb !important; }
-    section[data-testid="stSidebar"] [data-testid="stExpander"] summary span { color: #6b7280 !important; font-size: 13px !important; }
+    section[data-testid="stSidebar"] [data-testid="stExpander"] summary span { color: #6b7280 !important; font-size: 15px !important; }
+    section[data-testid="stSidebar"] [data-testid="stExpander"] [data-testid="stExpanderDetails"] p,
+    section[data-testid="stSidebar"] [data-testid="stExpander"] [data-testid="stExpanderDetails"] li,
+    section[data-testid="stSidebar"] [data-testid="stExpander"] [data-testid="stExpanderDetails"] span { font-size: 15px !important; }
 
     /* ══ SIDEBAR BUTTONS — Teradata orange ══ */
     section[data-testid="stSidebar"] .stButton > button {
@@ -117,7 +133,7 @@ st.markdown("""
         border: none !important;
         border-radius: 8px !important;
         font-weight: 700 !important;
-        font-size: 13px !important;
+        font-size: 15px !important;
         padding: 10px 16px !important;
         width: 100% !important;
         box-shadow: 0 2px 8px rgba(230,126,34,0.3) !important;
@@ -139,7 +155,7 @@ st.markdown("""
         border: none !important;
         border-radius: 8px !important;
         font-weight: 700 !important;
-        font-size: 14px !important;
+        font-size: 16px !important;
         box-shadow: 0 2px 8px rgba(0,82,204,0.25) !important;
         cursor: pointer !important;
     }
@@ -163,7 +179,7 @@ st.markdown("""
     /* ── SPINNER ── */
     .stSpinner, .stSpinner > div, .stSpinner > div > span {
         color: #e67e22 !important;
-        font-size: 15px !important;
+        font-size: 17px !important;
     }
     .stSpinner > div > i { color: #e67e22 !important; }
     .stSpinner { padding: 20px 0 !important; }
@@ -179,18 +195,18 @@ st.markdown("""
         border-radius: 14px; padding: 30px 34px; margin-bottom: 24px;
         box-shadow: 0 4px 20px rgba(0,0,0,0.08);
     }
-    .hero-banner h1 { color: #fff !important; font-size: 28px; margin-bottom: 6px; }
-    .hero-banner p { color: rgba(255,255,255,0.92) !important; font-size: 15px; margin: 0; }
+    .hero-banner h1 { color: #fff !important; font-size: 32px; margin-bottom: 6px; }
+    .hero-banner p { color: rgba(255,255,255,0.92) !important; font-size: 17px; margin: 0; }
     .logo-row { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
-    .logo-badge { background: rgba(255,255,255,0.22); padding: 5px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; color: #fff !important; backdrop-filter: blur(4px); }
+    .logo-badge { background: rgba(255,255,255,0.22); padding: 5px 14px; border-radius: 6px; font-size: 14px; font-weight: 600; color: #fff !important; backdrop-filter: blur(4px); }
 
     .login-card {
         background: #ffffff; border: 1px solid #e5e7eb; border-radius: 14px;
         padding: 32px; margin-bottom: 20px;
         box-shadow: 0 2px 12px rgba(0,0,0,0.06);
     }
-    .login-card h2 { color: #1a1a2e !important; text-align: center; margin-bottom: 6px; font-size: 22px; }
-    .login-card p { color: #6b7280 !important; text-align: center; font-size: 14px; }
+    .login-card h2 { color: #1a1a2e !important; text-align: center; margin-bottom: 6px; font-size: 26px; }
+    .login-card p { color: #6b7280 !important; text-align: center; font-size: 16px; }
 
     .metric-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
     @media (max-width: 768px) { .metric-row { grid-template-columns: repeat(2, 1fr); } }
@@ -199,38 +215,38 @@ st.markdown("""
         padding: 20px; text-align: center;
         box-shadow: 0 1px 4px rgba(0,0,0,0.04);
     }
-    .metric-card .mv { font-size: 28px; font-weight: 700; color: #1a1a2e; }
-    .metric-card .ml { font-size: 10px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.8px; margin-top: 2px; }
-    .metric-card .ms { font-size: 11px; color: #d35400; margin-top: 6px; font-weight: 500; }
+    .metric-card .mv { font-size: 32px; font-weight: 700; color: #1a1a2e; }
+    .metric-card .ml { font-size: 13px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.8px; margin-top: 2px; }
+    .metric-card .ms { font-size: 13px; color: #d35400; margin-top: 6px; font-weight: 500; }
 
     .value-banner {
         background: #eff6ff; border: 1px solid #bfdbfe; border-left: 4px solid #2563eb;
         border-radius: 10px; padding: 22px 26px; margin-bottom: 22px;
     }
-    .value-banner h3 { color: #1e40af !important; font-size: 16px; margin-bottom: 10px; }
-    .value-banner p { color: #374151 !important; font-size: 14px; line-height: 1.65; margin: 0; }
+    .value-banner h3 { color: #1e40af !important; font-size: 18px; margin-bottom: 10px; }
+    .value-banner p { color: #374151 !important; font-size: 16px; line-height: 1.65; margin: 0; }
 
-    .speed-table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 14px 0; font-size: 13px; }
-    .speed-table th { text-align: left; padding: 10px 14px; color: #6b7280; border-bottom: 2px solid #e5e7eb; font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; }
+    .speed-table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 14px 0; font-size: 15px; }
+    .speed-table th { text-align: left; padding: 10px 14px; color: #6b7280; border-bottom: 2px solid #e5e7eb; font-size: 13px; text-transform: uppercase; letter-spacing: 0.8px; }
     .speed-table td { padding: 11px 14px; border-bottom: 1px solid #f0f2f5; color: #374151; }
     .speed-table .old { color: #dc2626; font-weight: 500; }
     .speed-table .new { color: #16a34a; font-weight: 600; }
-    .speed-table .impact { color: #b45309; font-size: 12px; }
+    .speed-table .impact { color: #b45309; font-size: 14px; }
 
     .cat-card {
         background: #ffffff; border: 1px solid #e5e7eb; border-radius: 10px;
         padding: 14px 16px; margin-bottom: 8px;
         box-shadow: 0 1px 3px rgba(0,0,0,0.04);
     }
-    .cat-card h4 { color: #1e40af !important; font-size: 14px; margin: 0 0 5px 0; }
-    .cat-card .cat-time { font-size: 11px; color: #d35400 !important; margin-bottom: 5px; font-weight: 500; }
-    .cat-card .cat-desc { color: #6b7280 !important; font-size: 12px; line-height: 1.5; margin: 0; }
+    .cat-card h4 { color: #1e40af !important; font-size: 17px; margin: 0 0 5px 0; }
+    .cat-card .cat-time { font-size: 15px; color: #d35400 !important; margin-bottom: 5px; font-weight: 500; }
+    .cat-card .cat-desc { color: #6b7280 !important; font-size: 15px; line-height: 1.5; margin: 0; }
 
-    .timing-badge { display: inline-block; background: #dcfce7; border: 1px solid #86efac; color: #15803d !important; font-size: 12px; font-weight: 600; padding: 4px 14px; border-radius: 20px; margin-left: 8px; }
-    .timing-compare { display: inline-block; background: #fef3c7; border: 1px solid #fcd34d; color: #b45309 !important; font-size: 11px; padding: 3px 12px; border-radius: 20px; margin-left: 6px; }
+    .timing-badge { display: inline-block; background: #dcfce7; border: 1px solid #86efac; color: #15803d !important; font-size: 14px; font-weight: 600; padding: 4px 14px; border-radius: 20px; margin-left: 8px; }
+    .timing-compare { display: inline-block; background: #fef3c7; border: 1px solid #fcd34d; color: #b45309 !important; font-size: 13px; padding: 3px 12px; border-radius: 20px; margin-left: 6px; }
 
     .footer-row { display: flex; justify-content: center; gap: 28px; padding: 22px 0 10px 0; border-top: 1px solid #e5e7eb; margin-top: 36px; }
-    .footer-item { color: #9ca3af; font-size: 12px; }
+    .footer-item { color: #9ca3af; font-size: 14px; }
 
     /* ── QUERY SECTION SEPARATOR ── */
     .query-separator {
@@ -481,7 +497,7 @@ if submit and query:
     spinner_placeholder.markdown("""
     <div style="display:flex;align-items:center;gap:12px;padding:16px 20px;background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;margin:8px 0;">
         <div style="width:20px;height:20px;border:3px solid #fed7aa;border-top:3px solid #e67e22;border-radius:50%;animation:spin 1s linear infinite;flex-shrink:0;"></div>
-        <span style="color:#c2410c;font-size:15px;font-weight:500;">Querying Teradata via MCP + Claude — this may take 15-60 seconds...</span>
+        <span style="color:#c2410c;font-size:17px;font-weight:500;">Querying Teradata via MCP + Claude — this may take 15-60 seconds...</span>
     </div>
     <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
     """, unsafe_allow_html=True)
@@ -498,7 +514,7 @@ if submit and query:
         if result.returncode == 0:
             st.markdown(f"""
             <div style="display:flex;align-items:center;gap:8px;margin:12px 0 6px 0;">
-                <span style="color:#15803d;font-size:16px;font-weight:600;">✅ Analysis Complete</span>
+                <span style="color:#15803d;font-size:18px;font-weight:600;">✅ Analysis Complete</span>
                 <span class="timing-badge">⚡ {elapsed:.1f}s</span>
                 <span class="timing-compare">⏱ Traditional: hours to days</span>
             </div>
