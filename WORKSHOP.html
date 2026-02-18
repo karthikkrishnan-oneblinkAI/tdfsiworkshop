@@ -713,7 +713,7 @@
       <div class="step-description">Go to the workshop folder where all agent code is located.</div>
       <div class="command-box">
         <code class="command-text">cd /home/ubuntu/workshop/tdfsiworkshop</code>
-        <button class="copy-btn" onclick="copyCommand(this, 'cd /home/ubuntu/workshop/tdfsiworkshop')">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCmd(this, event)">📋 Copy</button>
       </div>
       <div class="checkbox-wrapper">
         <label><input type="checkbox" onchange="markComplete('step2', this.checked)"> Done</label>
@@ -728,7 +728,7 @@
       <div class="step-description">Check that your environment is configured with the Teradata connection string.</div>
       <div class="command-box">
         <code class="command-text">cat .env</code>
-        <button class="copy-btn" onclick="copyCommand(this, 'cat .env')">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCmd(this, event)">📋 Copy</button>
       </div>
       <div class="expected-label">Expected output:</div>
       <div class="expected-output">TERADATA_DATABASE_URI=teradatasql://user:pass@host/database</div>
@@ -754,7 +754,7 @@
       <div class="step-description">Install the required Python packages for the agent.</div>
       <div class="command-box">
         <code class="command-text">pip install -r requirements.txt</code>
-        <button class="copy-btn" onclick="copyCommand(this, 'pip install -r requirements.txt')">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCmd(this, event)">📋 Copy</button>
       </div>
       
       <div class="tip-box">
@@ -859,7 +859,7 @@
       <div class="step-description">Test the agent locally before deploying to AWS. This connects directly to Teradata via MCP.</div>
       <div class="command-box">
         <code class="command-text">python3 agent.py --interactive</code>
-        <button class="copy-btn" onclick="copyCommand(this, 'python3 agent.py --interactive')">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCmd(this, event)">📋 Copy</button>
       </div>
       <div class="expected-label">Try these queries:</div>
       <div class="expected-output">You: What databases and tables are available?
@@ -884,7 +884,7 @@ You: quit</div>
       <div class="step-description">View the AgentCore deployment configuration.</div>
       <div class="command-box">
         <code class="command-text">cat .bedrock_agentcore.yaml</code>
-        <button class="copy-btn" onclick="copyCommand(this, 'cat .bedrock_agentcore.yaml')">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCmd(this, event)">📋 Copy</button>
       </div>
       <div class="tip-box">
         <div class="tip-title">💡 Key settings</div>
@@ -905,7 +905,7 @@ You: quit</div>
       <div class="step-description">Deploy your agent to AWS Bedrock AgentCore. This builds a container and pushes it to ECR.</div>
       <div class="command-box">
         <code class="command-text">agentcore deploy --auto-update-on-conflict</code>
-        <button class="copy-btn" onclick="copyCommand(this, 'agentcore deploy --auto-update-on-conflict')">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCmd(this, event)">📋 Copy</button>
       </div>
       <div class="warning-box">
         <div class="warning-title">⏱️ This takes 3-5 minutes</div>
@@ -940,7 +940,7 @@ Status: ACTIVE</div>
       <div class="step-description">Verify your agent is running in AgentCore.</div>
       <div class="command-box">
         <code class="command-text">agentcore status</code>
-        <button class="copy-btn" onclick="copyCommand(this, 'agentcore status')">📋 Copy</button>
+        <button class="copy-btn" onclick="copyCmd(this, event)">📋 Copy</button>
       </div>
       <div class="checkbox-wrapper">
         <label><input type="checkbox" onchange="markComplete('step9', this.checked)"> Done</label>
@@ -959,7 +959,7 @@ Status: ACTIVE</div>
         <p>Start by understanding what data is available</p>
         <div class="command-box no-indent">
           <code class="command-text">agentcore invoke '{"prompt": "What databases and tables are available? Show me the schema."}'</code>
-          <button class="copy-btn" data-cmd='agentcore invoke '"'"'{"prompt": "What databases and tables are available? Show me the schema."}'"'"'' onclick="copyCommandFromData(this, event)">📋 Copy</button>
+          <button class="copy-btn" onclick="copyCmd(this, event)">📋 Copy</button>
         </div>
       </div>
 
@@ -968,7 +968,7 @@ Status: ACTIVE</div>
         <p>Identify customers likely to leave and the revenue at risk</p>
         <div class="command-box no-indent">
           <code class="command-text">agentcore invoke '{"prompt": "Show me customers with highest churn risk and calculate the revenue impact if we lose them"}'</code>
-          <button class="copy-btn" data-cmd='agentcore invoke '"'"'{"prompt": "Show me customers with highest churn risk and calculate the revenue impact if we lose them"}'"'"'' onclick="copyCommandFromData(this, event)">📋 Copy</button>
+          <button class="copy-btn" onclick="copyCmd(this, event)">📋 Copy</button>
         </div>
       </div>
 
@@ -977,7 +977,7 @@ Status: ACTIVE</div>
         <p>Analyze customer distribution and performance by region</p>
         <div class="command-box no-indent">
           <code class="command-text">agentcore invoke '{"prompt": "Compare customer metrics across France, Germany, and Spain. Which market has the highest average balance?"}'</code>
-          <button class="copy-btn" data-cmd='agentcore invoke '"'"'{"prompt": "Compare customer metrics across France, Germany, and Spain. Which market has the highest average balance?"}'"'"'' onclick="copyCommandFromData(this, event)">📋 Copy</button>
+          <button class="copy-btn" onclick="copyCmd(this, event)">📋 Copy</button>
         </div>
       </div>
 
@@ -986,7 +986,7 @@ Status: ACTIVE</div>
         <p>Find your most valuable customers for retention focus</p>
         <div class="command-box no-indent">
           <code class="command-text">agentcore invoke '{"prompt": "Find the top 20 customers by balance who have been inactive. These are high-value retention targets."}'</code>
-          <button class="copy-btn" data-cmd='agentcore invoke '"'"'{"prompt": "Find the top 20 customers by balance who have been inactive. These are high-value retention targets."}'"'"'' onclick="copyCommandFromData(this, event)">📋 Copy</button>
+          <button class="copy-btn" onclick="copyCmd(this, event)">📋 Copy</button>
         </div>
       </div>
 
@@ -995,7 +995,7 @@ Status: ACTIVE</div>
         <p>Analyze credit score distribution and risk exposure</p>
         <div class="command-box no-indent">
           <code class="command-text">agentcore invoke '{"prompt": "Analyze our credit risk portfolio. Show credit score distribution and identify customers who might be good candidates for credit limit increases."}'</code>
-          <button class="copy-btn" data-cmd='agentcore invoke '"'"'{"prompt": "Analyze our credit risk portfolio. Show credit score distribution and identify customers who might be good candidates for credit limit increases."}'"'"'' onclick="copyCommandFromData(this, event)">📋 Copy</button>
+          <button class="copy-btn" onclick="copyCmd(this, event)">📋 Copy</button>
         </div>
       </div>
 
@@ -1038,7 +1038,7 @@ Status: ACTIVE</div>
           <p>Identify unusual spikes and patterns immediately</p>
           <div class="command-box no-indent">
             <code class="command-text">agentcore invoke '{"prompt": "Analyze complaint patterns from the last 48 hours and identify any unusual spikes by product category"}'</code>
-            <button class="copy-btn" data-cmd='agentcore invoke '"'"'{"prompt": "Analyze complaint patterns from the last 48 hours and identify any unusual spikes by product category"}'"'"'' onclick="copyCommandFromData(this, event)">📋 Copy</button>
+            <button class="copy-btn" onclick="copyCmd(this, event)">📋 Copy</button>
           </div>
         </div>
 
@@ -1047,7 +1047,7 @@ Status: ACTIVE</div>
           <p>AI-powered pattern recognition in seconds vs hours of manual review</p>
           <div class="command-box no-indent">
             <code class="command-text">agentcore invoke '{"prompt": "Show me the top 3 complaint categories driving the highest churn risk and analyze the complaint narratives for common themes"}'</code>
-            <button class="copy-btn" data-cmd='agentcore invoke '"'"'{"prompt": "Show me the top 3 complaint categories driving the highest churn risk and analyze the complaint narratives for common themes"}'"'"'' onclick="copyCommandFromData(this, event)">📋 Copy</button>
+            <button class="copy-btn" onclick="copyCmd(this, event)">📋 Copy</button>
           </div>
         </div>
 
@@ -1056,7 +1056,7 @@ Status: ACTIVE</div>
           <p>Regional service quality patterns and resource allocation</p>
           <div class="command-box no-indent">
             <code class="command-text">agentcore invoke '{"prompt": "Identify geographic hotspots with highest complaint volumes and analyze regional service quality patterns"}'</code>
-            <button class="copy-btn" data-cmd='agentcore invoke '"'"'{"prompt": "Identify geographic hotspots with highest complaint volumes and analyze regional service quality patterns"}'"'"'' onclick="copyCommandFromData(this, event)">📋 Copy</button>
+            <button class="copy-btn" onclick="copyCmd(this, event)">📋 Copy</button>
           </div>
         </div>
 
@@ -1076,7 +1076,7 @@ Status: ACTIVE</div>
           <p>Find customers with unresolved complaints and calculate lifetime value at risk</p>
           <div class="command-box no-indent">
             <code class="command-text">agentcore invoke '{"prompt": "Find customers with unresolved complaints who have high churn probability and calculate their lifetime value at risk"}'</code>
-            <button class="copy-btn" data-cmd='agentcore invoke '"'"'{"prompt": "Find customers with unresolved complaints who have high churn probability and calculate their lifetime value at risk"}'"'"'' onclick="copyCommandFromData(this, event)">📋 Copy</button>
+            <button class="copy-btn" onclick="copyCmd(this, event)">📋 Copy</button>
           </div>
         </div>
 
@@ -1085,7 +1085,7 @@ Status: ACTIVE</div>
           <p>Identify the most effective resolution strategies</p>
           <div class="command-box no-indent">
             <code class="command-text">agentcore invoke '{"prompt": "Analyze complaint resolution success rates by company response type and identify the most effective resolution strategies"}'</code>
-            <button class="copy-btn" data-cmd='agentcore invoke '"'"'{"prompt": "Analyze complaint resolution success rates by company response type and identify the most effective resolution strategies"}'"'"'' onclick="copyCommandFromData(this, event)">📋 Copy</button>
+            <button class="copy-btn" onclick="copyCmd(this, event)">📋 Copy</button>
           </div>
         </div>
 
@@ -1094,7 +1094,7 @@ Status: ACTIVE</div>
           <p>Detect systemic issues before they become widespread</p>
           <div class="command-box no-indent">
             <code class="command-text">agentcore invoke '{"prompt": "Identify emerging complaint patterns that could indicate systemic issues before they become widespread problems"}'</code>
-            <button class="copy-btn" data-cmd='agentcore invoke '"'"'{"prompt": "Identify emerging complaint patterns that could indicate systemic issues before they become widespread problems"}'"'"'' onclick="copyCommandFromData(this, event)">📋 Copy</button>
+            <button class="copy-btn" onclick="copyCmd(this, event)">📋 Copy</button>
           </div>
         </div>
 
@@ -1114,7 +1114,7 @@ Status: ACTIVE</div>
           <p>Calculate ROI and cost savings potential</p>
           <div class="command-box no-indent">
             <code class="command-text">agentcore invoke '{"prompt": "Calculate the total revenue at risk from customers with unresolved complaints and estimate the cost savings from 40% improvement in complaint resolution"}'</code>
-            <button class="copy-btn" data-cmd='agentcore invoke '"'"'{"prompt": "Calculate the total revenue at risk from customers with unresolved complaints and estimate the cost savings from 40% improvement in complaint resolution"}'"'"'' onclick="copyCommandFromData(this, event)">📋 Copy</button>
+            <button class="copy-btn" onclick="copyCmd(this, event)">📋 Copy</button>
           </div>
         </div>
 
@@ -1123,7 +1123,7 @@ Status: ACTIVE</div>
           <p>Benchmark against industry and identify differentiation opportunities</p>
           <div class="command-box no-indent">
             <code class="command-text">agentcore invoke '{"prompt": "Compare our complaint resolution performance with industry benchmarks and identify opportunities for competitive differentiation"}'</code>
-            <button class="copy-btn" data-cmd='agentcore invoke '"'"'{"prompt": "Compare our complaint resolution performance with industry benchmarks and identify opportunities for competitive differentiation"}'"'"'' onclick="copyCommandFromData(this, event)">📋 Copy</button>
+            <button class="copy-btn" onclick="copyCmd(this, event)">📋 Copy</button>
           </div>
         </div>
 
@@ -1203,7 +1203,7 @@ Status: ACTIVE</div>
         </p>
         <div class="command-box no-indent">
           <code class="command-text">python3 customer_retention_agent.py --interactive</code>
-          <button class="copy-btn" onclick="copyCommand(this, 'python3 customer_retention_agent.py --interactive')">📋 Copy</button>
+          <button class="copy-btn" onclick="copyCmd(this, event)">📋 Copy</button>
         </div>
         <div style="margin-top: 15px;">
           <strong style="color: #569cd6;">Sample queries:</strong>
@@ -1224,7 +1224,7 @@ Status: ACTIVE</div>
         </p>
         <div class="command-box no-indent">
           <code class="command-text">python3 credit_risk_agent.py --interactive</code>
-          <button class="copy-btn" onclick="copyCommand(this, 'python3 credit_risk_agent.py --interactive')">📋 Copy</button>
+          <button class="copy-btn" onclick="copyCmd(this, event)">📋 Copy</button>
         </div>
         <div style="margin-top: 15px;">
           <strong style="color: #569cd6;">Sample queries:</strong>
@@ -1245,7 +1245,7 @@ Status: ACTIVE</div>
         </p>
         <div class="command-box no-indent">
           <code class="command-text">python3 wealth_management_agent.py --interactive</code>
-          <button class="copy-btn" onclick="copyCommand(this, 'python3 wealth_management_agent.py --interactive')">📋 Copy</button>
+          <button class="copy-btn" onclick="copyCmd(this, event)">📋 Copy</button>
         </div>
         <div style="margin-top: 15px;">
           <strong style="color: #569cd6;">Sample queries:</strong>
@@ -1361,7 +1361,7 @@ Status: ACTIVE</div>
           <li>Copy an existing agent file:
             <div class="command-box no-indent" style="margin: 8px 0;">
               <code class="command-text">cp customer_retention_agent.py my_custom_agent.py</code>
-              <button class="copy-btn" onclick="copyCommand(this, 'cp customer_retention_agent.py my_custom_agent.py', event)">📋 Copy</button>
+              <button class="copy-btn" onclick="copyCmd(this, event)">📋 Copy</button>
             </div>
           </li>
           <li>Open <code>my_custom_agent.py</code> in VS Code</li>
@@ -1442,37 +1442,50 @@ User: "Should we offer credit increases to high-value churning customers?"
   </div>
 
   <script>
-    // Copy to clipboard - simple version
-    function copyCommand(btn, text, event) {
-      // Stop the event from bubbling up to the collapsible header
+    // =========================================================
+    // UNIFIED COPY FUNCTION — reads text from sibling .command-text
+    // This avoids all HTML attribute escaping issues by reading
+    // the visible text content directly from the DOM.
+    // =========================================================
+    function copyCmd(btn, event) {
+      // Stop event from bubbling to collapsible headers
       if (event) {
         event.stopPropagation();
       }
-      
-      navigator.clipboard.writeText(text).then(() => {
-        const originalText = btn.textContent;
+
+      // Find the sibling .command-text element within the same .command-box
+      var commandBox = btn.closest('.command-box');
+      if (!commandBox) return;
+
+      var codeEl = commandBox.querySelector('.command-text');
+      if (!codeEl) return;
+
+      // Get the text content (what the user sees)
+      var text = codeEl.textContent.trim();
+
+      navigator.clipboard.writeText(text).then(function() {
+        var originalText = btn.textContent;
         btn.textContent = '✓ Copied!';
         btn.classList.add('copied');
-        setTimeout(() => {
+        setTimeout(function() {
           btn.textContent = originalText;
           btn.classList.remove('copied');
         }, 2000);
-      });
-    }
+      }).catch(function() {
+        // Fallback for older browsers
+        var textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
 
-    // Copy from data attribute - with event stopPropagation
-    function copyCommandFromData(btn, event) {
-      // Stop the event from bubbling up to the collapsible header
-      if (event) {
-        event.stopPropagation();
-      }
-      
-      const text = btn.getAttribute('data-cmd');
-      navigator.clipboard.writeText(text).then(() => {
-        const originalText = btn.textContent;
+        var originalText = btn.textContent;
         btn.textContent = '✓ Copied!';
         btn.classList.add('copied');
-        setTimeout(() => {
+        setTimeout(function() {
           btn.textContent = originalText;
           btn.classList.remove('copied');
         }, 2000);
@@ -1481,7 +1494,7 @@ User: "Should we offer credit increases to high-value churning customers?"
 
     // Mark step complete
     function markComplete(stepId, isComplete) {
-      const step = document.getElementById(stepId);
+      var step = document.getElementById(stepId);
       if (step) {
         if (isComplete) {
           step.classList.add('completed');
@@ -1494,13 +1507,13 @@ User: "Should we offer credit increases to high-value churning customers?"
 
     // Update progress bar
     function updateProgress() {
-      const checkboxes = document.querySelectorAll('.step input[type="checkbox"]');
-      const completed = Array.from(checkboxes).filter(cb => cb.checked).length;
-      const total = checkboxes.length;
-      const percentage = (completed / total) * 100;
+      var checkboxes = document.querySelectorAll('.step input[type="checkbox"]');
+      var completed = Array.from(checkboxes).filter(function(cb) { return cb.checked; }).length;
+      var total = checkboxes.length;
+      var percentage = (completed / total) * 100;
       
       document.getElementById('progressBar').style.width = percentage + '%';
-      document.getElementById('progressText').textContent = `${completed} of ${total} steps completed`;
+      document.getElementById('progressText').textContent = completed + ' of ' + total + ' steps completed';
       
       // Show done banner when all complete
       document.getElementById('doneBanner').classList.toggle('show', completed === total);
@@ -1508,10 +1521,10 @@ User: "Should we offer credit increases to high-value churning customers?"
 
     // Tab switching
     function showTab(tabId) {
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+      document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
       
-      document.querySelector(`[onclick="showTab('${tabId}')"]`).classList.add('active');
+      document.querySelector('[onclick="showTab(\'' + tabId + '\')"]').classList.add('active');
       document.getElementById(tabId).classList.add('active');
     }
 
