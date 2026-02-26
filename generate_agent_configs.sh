@@ -4,6 +4,17 @@
 
 WORKSHOP_DIR="/home/ubuntu/workshop/tdfsiworkshop"
 
+# Auto-detect AWS account ID
+ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text 2>/dev/null)
+
+if [ -z "$ACCOUNT_ID" ]; then
+    echo "❌ Could not get AWS account ID. Make sure AWS credentials are configured."
+    exit 1
+fi
+
+echo "📡 Detected AWS Account: $ACCOUNT_ID"
+echo ""
+
 # List of agents
 declare -A AGENTS=(
     ["agent"]="agent.py"
@@ -29,9 +40,10 @@ agents:
     platform: linux/arm64
     source_path: ${WORKSHOP_DIR}
     aws:
+      account: '${ACCOUNT_ID}'
+      region: us-east-1
       execution_role_auto_create: true
       ecr_auto_create: true
-      region: us-east-1
       network_configuration:
         network_mode: PUBLIC
       observability:
